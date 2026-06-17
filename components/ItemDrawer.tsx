@@ -195,11 +195,19 @@ export function ItemDrawer({ activeSlot, onClose }: ItemDrawerProps) {
         <div className="grid gap-3">
           {filteredItems.map((item) => {
             const isSelected = activeSlot ? outfit[activeSlot] === item.id : false;
+            const selectedElsewhere = Object.entries(outfit).find(
+              ([slot, selectedId]) => slot !== activeSlot && selectedId === item.id
+            )?.[0] as ClothingSlot | undefined;
+            const isSelectedElsewhere = Boolean(selectedElsewhere);
             return (
               <button
                 key={item.id}
                 className={`grid grid-cols-[94px_1fr_auto] items-center gap-3 rounded-lg border bg-white p-2 text-left transition hover:border-emerald-700 ${
-                  isSelected ? "border-emerald-800" : "border-stone-300"
+                  isSelected
+                    ? "border-emerald-800"
+                    : isSelectedElsewhere
+                      ? "border-stone-300 opacity-55 grayscale"
+                      : "border-stone-300"
                 }`}
                 onClick={() => {
                   if (!activeSlot) return;
@@ -232,6 +240,11 @@ export function ItemDrawer({ activeSlot, onClose }: ItemDrawerProps) {
                     <span className="rounded-md bg-stone-100 px-2 py-1">
                       {seasonLabel(item.season)}
                     </span>
+                    {selectedElsewhere && (
+                      <span className="rounded-md bg-stone-200 px-2 py-1 text-stone-700">
+                        Selected in {slotLabels[selectedElsewhere]}
+                      </span>
+                    )}
                   </div>
                 </div>
                 <span

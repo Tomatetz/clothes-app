@@ -253,16 +253,48 @@ export function WardrobeProvider({ children }: { children: ReactNode }) {
         }
       },
       selectItem: (slot, itemId) => {
-        setOutfit((current) => ({ ...current, [slot]: itemId }));
+        const slotsToClear = Object.entries(outfit)
+          .filter(
+            ([currentSlot, selectedId]) =>
+              currentSlot !== slot && selectedId === itemId
+          )
+          .map(([currentSlot]) => currentSlot as ClothingSlot);
+
+        setOutfit((current) => {
+          const next = { ...current };
+
+          Object.entries(next).forEach(([currentSlot, selectedId]) => {
+            if (currentSlot !== slot && selectedId === itemId) {
+              delete next[currentSlot as ClothingSlot];
+            }
+          });
+
+          next[slot] = itemId;
+          return next;
+        });
 
         if (usesRemoteData) {
-          fetch("/api/outfit", {
-            method: "PUT",
-            headers: {
-              "content-type": "application/json"
-            },
-            body: JSON.stringify({ slot, clothingItemId: itemId })
-          }).catch(() => setError("Failed to save outfit selection"));
+          Promise.all([
+            ...slotsToClear.map((slotToClear) =>
+              fetch("/api/outfit", {
+                method: "PUT",
+                headers: {
+                  "content-type": "application/json"
+                },
+                body: JSON.stringify({
+                  slot: slotToClear,
+                  clothingItemId: null
+                })
+              })
+            ),
+            fetch("/api/outfit", {
+              method: "PUT",
+              headers: {
+                "content-type": "application/json"
+              },
+              body: JSON.stringify({ slot, clothingItemId: itemId })
+            })
+          ]).catch(() => setError("Failed to save outfit selection"));
         }
       },
       clearSelection: (slot) => {
