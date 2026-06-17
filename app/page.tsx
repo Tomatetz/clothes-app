@@ -47,9 +47,8 @@ export default function Home() {
             ))}
           </div>
 
-          <aside className="grid gap-4 lg:grid-rows-[1fr_auto]">
+          <aside className="grid content-start gap-4">
             <ClosetView
-              compact
               slot="bag"
               onOpen={() => setActiveSlot("bag")}
             />
