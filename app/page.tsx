@@ -36,7 +36,7 @@ export default function Home() {
           </button>
         </header>
 
-        <section className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1fr)_156px]">
+        <section className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1fr)_312px]">
           <div className="grid gap-4">
             {outfitSlots.map((slot) => (
               <ClosetView
