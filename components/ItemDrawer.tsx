@@ -214,6 +214,7 @@ export function ItemDrawer({ activeSlot, onClose }: ItemDrawerProps) {
                     alt={item.name}
                     fill
                     className="object-cover"
+                    unoptimized
                     sizes="94px"
                   />
                 </div>

@@ -65,6 +65,7 @@ export function ClosetView({ slot, onOpen, compact = false }: ClosetViewProps) {
                 alt={selected.name}
                 fill
                 className="object-cover"
+                unoptimized
                 sizes="(max-width: 1024px) 100vw, 280px"
               />
             </div>

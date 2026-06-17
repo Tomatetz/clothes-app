@@ -10,7 +10,7 @@ import {
   slotLabels
 } from "@/lib/wardrobe";
 import Image from "next/image";
-import { ChangeEvent, FormEvent, useMemo, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
 import { ImagePlus, Search, Trash2, X } from "lucide-react";
 
 const fallbackImage = "/samples/item.svg";
@@ -23,14 +23,18 @@ type ManagePanelProps = {
 };
 
 export function ManagePanel({ open, onClose }: ManagePanelProps) {
-  const { addItem, items, removeItem, updateItem } = useWardrobe();
+  const { addItem, error, items, removeItem, updateItem, uploadImage } =
+    useWardrobe();
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
+  const [adminPassword, setAdminPassword] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
   const [name, setName] = useState("");
   const [category, setCategory] = useState(categories[0]);
   const [brand, setBrand] = useState("");
   const [season, setSeason] = useState<Season>("all-season");
   const [slots, setSlots] = useState<ClothingSlot[]>(defaultSlotByCategory[categories[0]]);
   const [imageUrl, setImageUrl] = useState(fallbackImage);
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [listSearchQuery, setListSearchQuery] = useState("");
   const [listCategoryFilter, setListCategoryFilter] = useState("all");
   const [listBrandFilter, setListBrandFilter] = useState("all");
@@ -59,6 +63,10 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
     });
   }, [items, listBrandFilter, listCategoryFilter, listSearchQuery]);
 
+  useEffect(() => {
+    setAdminPassword(window.sessionStorage.getItem("clothes-admin-password") ?? "");
+  }, []);
+
   function resetForm() {
     setEditingItemId(null);
     setName("");
@@ -67,6 +75,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
     setSeason("all-season");
     setSlots(defaultSlotByCategory[categories[0]]);
     setImageUrl(fallbackImage);
+    setPhotoFile(null);
   }
 
   function startEditing(itemId: string) {
@@ -80,6 +89,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
     setSeason(item.season);
     setSlots(item.slots);
     setImageUrl(item.imageUrl);
+    setPhotoFile(null);
   }
 
   function handlePhoto(event: ChangeEvent<HTMLInputElement>) {
@@ -91,6 +101,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
       if (typeof reader.result === "string") setImageUrl(reader.result);
     };
     reader.readAsDataURL(file);
+    setPhotoFile(file);
   }
 
   function toggleSlot(slot: ClothingSlot) {
@@ -104,25 +115,44 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
     });
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setIsSaving(true);
+
+    window.sessionStorage.setItem("clothes-admin-password", adminPassword);
+
+    const uploadedImageUrl = photoFile
+      ? await uploadImage(photoFile, adminPassword)
+      : imageUrl;
+
+    if (photoFile && !uploadedImageUrl) {
+      setIsSaving(false);
+      return;
+    }
+
+    const finalImageUrl = uploadedImageUrl ?? imageUrl;
     const itemData = {
       name: name.trim() || category,
       category,
       brand: brand.trim() || "No brand",
       season,
-      imageUrl,
+      imageUrl: finalImageUrl,
       slots
     };
 
-    if (editingItemId) {
-      updateItem({
-        ...itemData,
-        id: editingItemId
-      });
-    } else {
-      addItem(itemData);
-    }
+    const saved = editingItemId
+      ? await updateItem(
+          {
+            ...itemData,
+            id: editingItemId
+          },
+          adminPassword
+        )
+      : await addItem(itemData, adminPassword);
+
+    setIsSaving(false);
+
+    if (!saved) return;
 
     resetForm();
   }
@@ -165,6 +195,19 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
                 <X size={18} />
               </button>
             </div>
+
+            <label className="mb-4 block">
+              <span className="mb-1.5 block text-sm font-medium text-stone-700">
+                Admin password
+              </span>
+              <input
+                className="h-11 w-full rounded-md border border-stone-300 bg-white px-3 text-stone-950"
+                value={adminPassword}
+                onChange={(event) => setAdminPassword(event.target.value)}
+                placeholder="Required for saving"
+                type="password"
+              />
+            </label>
 
             <label className="mb-4 block">
               <span className="mb-1.5 block text-sm font-medium text-stone-700">
@@ -264,6 +307,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
                     alt="Preview"
                     fill
                     className="object-cover"
+                    unoptimized
                     sizes="92px"
                   />
                 </div>
@@ -275,11 +319,22 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
             </label>
 
             <button
-              className="h-11 w-full rounded-md bg-stone-950 px-4 text-sm font-semibold text-white transition hover:bg-emerald-950"
+              className="h-11 w-full rounded-md bg-stone-950 px-4 text-sm font-semibold text-white transition hover:bg-emerald-950 disabled:cursor-not-allowed disabled:opacity-60"
+              disabled={isSaving}
               type="submit"
             >
-              {editingItemId ? "Update item" : "Save item"}
+              {isSaving
+                ? "Saving..."
+                : editingItemId
+                  ? "Update item"
+                  : "Save item"}
             </button>
+
+            {error && (
+              <div className="mt-3 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+                {error}
+              </div>
+            )}
 
             {editingItemId && (
               <button
@@ -385,6 +440,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
                       alt={item.name}
                       fill
                       className="object-cover"
+                      unoptimized
                       sizes="88px"
                     />
                   </div>
@@ -410,8 +466,13 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
                     className="flex size-9 items-center justify-center rounded-md border border-stone-300 text-stone-500 transition hover:border-red-700 hover:text-red-700"
                     onClick={(event) => {
                       event.stopPropagation();
-                      removeItem(item.id);
-                      if (editingItemId === item.id) resetForm();
+                      window.sessionStorage.setItem(
+                        "clothes-admin-password",
+                        adminPassword
+                      );
+                      removeItem(item.id, adminPassword).then((removed) => {
+                        if (removed && editingItemId === item.id) resetForm();
+                      });
                     }}
                     type="button"
                     title="Remove"
