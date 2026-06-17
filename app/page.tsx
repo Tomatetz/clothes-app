@@ -4,8 +4,9 @@ import { ClothingSlot, slotLabels } from "@/lib/wardrobe";
 import { ClosetView } from "@/components/ClosetView";
 import { ItemDrawer } from "@/components/ItemDrawer";
 import { ManagePanel } from "@/components/ManagePanel";
+import { SlotIcon } from "@/components/SlotIcon";
 import { useState } from "react";
-import { BriefcaseBusiness, Settings2, Shirt, ShoppingBag } from "lucide-react";
+import { BriefcaseBusiness, Settings2 } from "lucide-react";
 
 const outfitSlots: ClothingSlot[] = ["top", "outerTop", "bottom", "shoes"];
 
@@ -66,11 +67,7 @@ export default function Home() {
                     type="button"
                     title={`Open ${slotLabels[slot]}`}
                   >
-                    {slot === "bag" ? (
-                      <ShoppingBag size={18} />
-                    ) : (
-                      <Shirt size={18} />
-                    )}
+                    <SlotIcon slot={slot} />
                     <span className="hidden sm:inline lg:inline">
                       {slotLabels[slot]}
                     </span>

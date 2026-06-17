@@ -3,7 +3,8 @@
 import { useWardrobe } from "@/context/WardrobeContext";
 import { ClothingSlot, seasonLabel, slotLabels } from "@/lib/wardrobe";
 import Image from "next/image";
-import { Minus, Shirt, ShoppingBag } from "lucide-react";
+import { Minus } from "lucide-react";
+import { SlotIcon } from "@/components/SlotIcon";
 
 type ClosetViewProps = {
   slot: ClothingSlot;
@@ -31,7 +32,7 @@ export function ClosetView({ slot, onOpen, compact = false }: ClosetViewProps) {
             type="button"
           >
             <span className="flex size-9 items-center justify-center rounded-md bg-stone-950 text-white">
-              {slot === "bag" ? <ShoppingBag size={18} /> : <Shirt size={18} />}
+              <SlotIcon slot={slot} />
             </span>
             <div>
               <div className="text-lg font-semibold text-stone-950">
