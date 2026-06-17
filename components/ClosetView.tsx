@@ -19,9 +19,7 @@ export function ClosetView({ slot, onOpen, compact = false }: ClosetViewProps) {
 
   return (
     <div
-      className={`group relative overflow-hidden rounded-lg border border-stone-300 bg-white text-left shadow-soft transition hover:-translate-y-0.5 hover:border-emerald-700 ${
-        compact ? "min-h-[300px]" : "min-h-[180px]"
-      }`}
+      className="group relative min-h-[180px] overflow-hidden rounded-lg border border-stone-300 bg-white text-left shadow-soft transition hover:-translate-y-0.5 hover:border-emerald-700"
     >
       <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.74),rgba(238,241,237,0.52))]" />
       <div className="relative flex h-full min-h-inherit flex-col p-4 sm:p-5">
@@ -55,7 +53,7 @@ export function ClosetView({ slot, onOpen, compact = false }: ClosetViewProps) {
         {selected ? (
           <button
             className={`grid flex-1 gap-4 ${
-              compact ? "grid-rows-[1fr_auto]" : "sm:grid-cols-[minmax(0,260px)_1fr]"
+              compact ? "grid-rows-[minmax(150px,1fr)_auto]" : "sm:grid-cols-[minmax(0,260px)_1fr]"
             }`}
             onClick={onOpen}
             type="button"
@@ -71,15 +69,19 @@ export function ClosetView({ slot, onOpen, compact = false }: ClosetViewProps) {
               />
             </div>
             <div className="flex min-w-0 flex-col justify-end">
-              <div className="truncate text-2xl font-semibold text-stone-950">
+              <div className={`${compact ? "text-lg" : "text-2xl"} truncate font-semibold text-stone-950`}>
                 {selected.name}
               </div>
-              <div className="mt-1 text-sm text-stone-600">
-                {selected.brand} · {selected.category}
-              </div>
-              <div className="mt-3 inline-flex w-fit rounded-md bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-900">
-                {seasonLabel(selected.season)}
-              </div>
+              {!compact && (
+                <>
+                  <div className="mt-1 text-sm text-stone-600">
+                    {selected.brand} · {selected.category}
+                  </div>
+                  <div className="mt-3 inline-flex w-fit rounded-md bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-900">
+                    {seasonLabel(selected.season)}
+                  </div>
+                </>
+              )}
             </div>
           </button>
         ) : (

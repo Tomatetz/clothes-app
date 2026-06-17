@@ -49,6 +49,7 @@ export default function Home() {
 
           <aside className="grid content-start gap-4">
             <ClosetView
+              compact
               slot="bag"
               onOpen={() => setActiveSlot("bag")}
             />
