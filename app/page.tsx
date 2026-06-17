@@ -7,7 +7,7 @@ import { ManagePanel } from "@/components/ManagePanel";
 import { useState } from "react";
 import { BriefcaseBusiness, Settings2, Shirt, ShoppingBag } from "lucide-react";
 
-const outfitSlots: ClothingSlot[] = ["top", "bottom", "shoes"];
+const outfitSlots: ClothingSlot[] = ["top", "outerTop", "bottom", "shoes"];
 
 export default function Home() {
   const [activeSlot, setActiveSlot] = useState<ClothingSlot | null>(null);
@@ -57,7 +57,7 @@ export default function Home() {
                 <BriefcaseBusiness size={17} />
                 Quick pick
               </div>
-              <div className="grid grid-cols-4 gap-2 lg:grid-cols-1">
+              <div className="grid grid-cols-5 gap-2 lg:grid-cols-1">
                 {[...outfitSlots, "bag" as ClothingSlot].map((slot) => (
                   <button
                     key={slot}

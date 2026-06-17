@@ -15,7 +15,7 @@ import { ImagePlus, Search, Trash2, X } from "lucide-react";
 
 const fallbackImage = "/samples/item.svg";
 const seasons: Season[] = ["all-season", "summer", "winter"];
-const allSlots: ClothingSlot[] = ["top", "bottom", "shoes", "bag"];
+const allSlots: ClothingSlot[] = ["top", "outerTop", "bottom", "shoes", "bag"];
 
 type ManagePanelProps = {
   open: boolean;
@@ -275,7 +275,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
               <span className="mb-2 block text-sm font-medium text-stone-700">
                 Slot
               </span>
-              <div className="grid grid-cols-4 gap-2">
+              <div className="grid grid-cols-5 gap-2">
                 {allSlots.map((slot) => (
                   <button
                     key={slot}

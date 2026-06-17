@@ -8,7 +8,7 @@ create table if not exists public.clothes (
   season text not null check (season in ('summer', 'winter', 'all-season')),
   image_url text not null,
   slots text[] not null check (
-    slots <@ array['top', 'bottom', 'shoes', 'bag']::text[]
+    slots <@ array['top', 'outerTop', 'bottom', 'shoes', 'bag']::text[]
     and cardinality(slots) > 0
   ),
   created_at timestamptz not null default now(),
@@ -16,7 +16,7 @@ create table if not exists public.clothes (
 );
 
 create table if not exists public.outfit_selections (
-  slot text primary key check (slot in ('top', 'bottom', 'shoes', 'bag')),
+  slot text primary key check (slot in ('top', 'outerTop', 'bottom', 'shoes', 'bag')),
   clothing_item_id uuid references public.clothes(id) on delete set null,
   updated_at timestamptz not null default now()
 );

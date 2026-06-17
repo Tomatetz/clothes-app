@@ -86,7 +86,13 @@ export function outfitRowsToRecord(rows: OutfitSelectionRow[]) {
 }
 
 export function isClothingSlot(value: unknown): value is ClothingSlot {
-  return value === "top" || value === "bottom" || value === "shoes" || value === "bag";
+  return (
+    value === "top" ||
+    value === "outerTop" ||
+    value === "bottom" ||
+    value === "shoes" ||
+    value === "bag"
+  );
 }
 
 export function isSeason(value: unknown): value is Season {

@@ -1,4 +1,4 @@
-export type ClothingSlot = "top" | "bottom" | "shoes" | "bag";
+export type ClothingSlot = "top" | "outerTop" | "bottom" | "shoes" | "bag";
 
 export type Season = "summer" | "winter" | "all-season";
 
@@ -14,6 +14,7 @@ export type WardrobeItem = {
 
 export const slotLabels: Record<ClothingSlot, string> = {
   top: "Top",
+  outerTop: "Layer",
   bottom: "Bottom",
   shoes: "Shoes",
   bag: "Bag"
@@ -42,18 +43,18 @@ export const categories = [
 ];
 
 export const defaultSlotByCategory: Record<string, ClothingSlot[]> = {
-  Coats: ["top"],
-  "Down Jackets": ["top"],
-  "Fur & Shearling": ["top"],
-  Jackets: ["top"],
+  Coats: ["top", "outerTop"],
+  "Down Jackets": ["top", "outerTop"],
+  "Fur & Shearling": ["top", "outerTop"],
+  Jackets: ["top", "outerTop"],
   Jeans: ["bottom"],
-  Knitwear: ["top"],
+  Knitwear: ["top", "outerTop"],
   "Overalls & Jumpsuits": ["top", "bottom"],
   Pants: ["bottom"],
-  Shirts: ["top"],
+  Shirts: ["top", "outerTop"],
   Shorts: ["bottom"],
   Skirts: ["bottom"],
-  Sweatshirts: ["top"],
+  Sweatshirts: ["top", "outerTop"],
   "T-Shirts": ["top"],
   Underwear: ["top", "bottom"],
   Sneakers: ["shoes"],
@@ -80,7 +81,7 @@ export const starterItems: WardrobeItem[] = [
     brand: "COS",
     season: "winter",
     imageUrl: "/samples/knitwear.svg",
-    slots: ["top"]
+    slots: ["top", "outerTop"]
   },
   {
     id: "sample-wool-coat",
@@ -89,7 +90,7 @@ export const starterItems: WardrobeItem[] = [
     brand: "Max Mara",
     season: "winter",
     imageUrl: "/samples/coat.svg",
-    slots: ["top"]
+    slots: ["top", "outerTop"]
   },
   {
     id: "sample-down-jacket",
@@ -98,7 +99,7 @@ export const starterItems: WardrobeItem[] = [
     brand: "Uniqlo",
     season: "winter",
     imageUrl: "/samples/down-jacket.svg",
-    slots: ["top"]
+    slots: ["top", "outerTop"]
   },
   {
     id: "sample-shearling",
@@ -107,7 +108,7 @@ export const starterItems: WardrobeItem[] = [
     brand: "Acne Studios",
     season: "winter",
     imageUrl: "/samples/shearling.svg",
-    slots: ["top"]
+    slots: ["top", "outerTop"]
   },
   {
     id: "sample-leather-jacket",
@@ -116,7 +117,7 @@ export const starterItems: WardrobeItem[] = [
     brand: "AllSaints",
     season: "all-season",
     imageUrl: "/samples/jacket.svg",
-    slots: ["top"]
+    slots: ["top", "outerTop"]
   },
   {
     id: "sample-white-shirt",
@@ -125,7 +126,7 @@ export const starterItems: WardrobeItem[] = [
     brand: "Arket",
     season: "all-season",
     imageUrl: "/samples/shirt.svg",
-    slots: ["top"]
+    slots: ["top", "outerTop"]
   },
   {
     id: "sample-linen-shirt",
@@ -134,7 +135,7 @@ export const starterItems: WardrobeItem[] = [
     brand: "Massimo Dutti",
     season: "summer",
     imageUrl: "/samples/linen-shirt.svg",
-    slots: ["top"]
+    slots: ["top", "outerTop"]
   },
   {
     id: "sample-hoodie",
@@ -143,7 +144,7 @@ export const starterItems: WardrobeItem[] = [
     brand: "Nike",
     season: "all-season",
     imageUrl: "/samples/hoodie.svg",
-    slots: ["top"]
+    slots: ["top", "outerTop"]
   },
   {
     id: "sample-tee",
@@ -170,7 +171,7 @@ export const starterItems: WardrobeItem[] = [
     brand: "Toteme",
     season: "winter",
     imageUrl: "/samples/cardigan.svg",
-    slots: ["top"]
+    slots: ["top", "outerTop"]
   },
   {
     id: "sample-jeans",

@@ -36,10 +36,21 @@ const WardrobeContext = createContext<WardrobeContextValue | null>(null);
 const storageKey = "clothes-app-wardrobe";
 
 function mergeStarterItems(savedItems: WardrobeItem[]) {
-  const savedIds = new Set(savedItems.map((item) => item.id));
+  const starterById = new Map(starterItems.map((item) => [item.id, item]));
+  const syncedSavedItems = savedItems.map((item) => {
+    const starterItem = starterById.get(item.id);
+
+    if (!starterItem) return item;
+
+    return {
+      ...item,
+      slots: Array.from(new Set([...item.slots, ...starterItem.slots]))
+    };
+  });
+  const savedIds = new Set(syncedSavedItems.map((item) => item.id));
   const missingStarterItems = starterItems.filter((item) => !savedIds.has(item.id));
 
-  return [...savedItems, ...missingStarterItems];
+  return [...syncedSavedItems, ...missingStarterItems];
 }
 
 async function parseJsonResponse<T>(response: Response): Promise<T> {
