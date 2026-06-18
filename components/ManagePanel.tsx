@@ -212,23 +212,18 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
 
 	return (
 		<div
-			className={`fixed inset-0 z-50 transition ${
+			className={`manage-mode fixed inset-0 z-50 ${
 				open ? "pointer-events-auto" : "pointer-events-none"
 			}`}
+			data-state={open ? "open" : "closed"}
 			aria-hidden={!open}
 		>
 			<div
-				className={`absolute inset-0 bg-stone-950/35 transition-opacity duration-300 ${
-					open ? "opacity-100" : "opacity-0"
-				}`}
+				className="manage-backdrop absolute inset-0 bg-stone-950/35"
 				onClick={onClose}
 			/>
 			<section
-				className={`absolute left-1/2 top-1/2 flex max-h-[94vh] w-[min(1380px,calc(100vw-24px))] -translate-x-1/2 overflow-hidden border border-stone-950/30 bg-[#f3f1eb] transition duration-300 ${
-					open
-						? "-translate-y-1/2 scale-100 opacity-100"
-						: "translate-y-4 scale-[0.985] opacity-0"
-				}`}
+				className="manage-sheet absolute left-1/2 top-1/2 flex max-h-[94vh] w-[min(1380px,calc(100vw-24px))] overflow-hidden border border-stone-950/30 bg-[#f3f1eb]"
 			>
 				<div
 					ref={panelScrollRef}

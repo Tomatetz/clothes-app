@@ -26,8 +26,10 @@ export function CustomSelect({
 	className = "",
 }: CustomSelectProps) {
 	const [open, setOpen] = useState(false);
+	const [menuMounted, setMenuMounted] = useState(false);
 	const [activeIndex, setActiveIndex] = useState(0);
 	const rootRef = useRef<HTMLDivElement>(null);
+	const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 	const listboxId = useId();
 	const selectedIndex = Math.max(
 		0,
@@ -39,28 +41,43 @@ export function CustomSelect({
 		if (!open) return;
 
 		function closeOnOutsideClick(event: MouseEvent) {
-			if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
+			if (!rootRef.current?.contains(event.target as Node)) closeMenu();
 		}
 
 		document.addEventListener("mousedown", closeOnOutsideClick);
 		return () => document.removeEventListener("mousedown", closeOnOutsideClick);
 	}, [open]);
 
+	useEffect(
+		() => () => {
+			if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+		},
+		[],
+	);
+
 	function openMenu() {
+		if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
 		setActiveIndex(selectedIndex);
+		setMenuMounted(true);
 		setOpen(true);
+	}
+
+	function closeMenu() {
+		setOpen(false);
+		if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+		closeTimerRef.current = setTimeout(() => setMenuMounted(false), 190);
 	}
 
 	function choose(index: number) {
 		const option = options[index];
 		if (!option) return;
 		onChange(option.value);
-		setOpen(false);
+		closeMenu();
 	}
 
 	function handleKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
 		if (event.key === "Escape") {
-			setOpen(false);
+			closeMenu();
 			return;
 		}
 
@@ -98,7 +115,7 @@ export function CustomSelect({
 						? "h-12 border border-stone-950/25 bg-transparent px-3 pb-1 pt-4 text-sm text-stone-950 hover:bg-[#e2ded3]"
 						: "h-12 bg-transparent px-3 text-xs uppercase tracking-[0.08em] text-stone-950 hover:bg-[#e8e4da]"
 				}`}
-				onClick={() => (open ? setOpen(false) : openMenu())}
+				onClick={() => (open ? closeMenu() : openMenu())}
 				onKeyDown={handleKeyDown}
 				type="button"
 			>
@@ -112,10 +129,12 @@ export function CustomSelect({
 				/>
 			</button>
 
-			{open && (
+			{menuMounted && (
 				<div
 					aria-label={ariaLabel}
-					className={`absolute left-0 right-0 z-50 max-h-64 overflow-y-auto border border-stone-950/30 bg-[#f3f1eb] ${
+					className={`dropdown-unfold absolute left-0 right-0 z-50 max-h-64 overflow-y-auto border border-stone-950/30 bg-[#f3f1eb] ${
+						open ? "dropdown-unfold-open" : "dropdown-unfold-closed"
+					} ${
 						isField ? "top-[calc(100%-1px)]" : "top-full"
 					}`}
 					id={listboxId}
@@ -143,6 +162,11 @@ export function CustomSelect({
 								onClick={() => choose(index)}
 								onMouseEnter={() => setActiveIndex(index)}
 								role="option"
+								style={{
+									animationDelay: open
+										? `${Math.min(index, 8) * 18 + 45}ms`
+										: "0ms",
+								}}
 								type="button"
 							>
 								<span>{option.label}</span>

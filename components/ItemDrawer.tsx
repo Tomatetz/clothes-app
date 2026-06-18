@@ -7,7 +7,7 @@ import { useWardrobe } from "@/context/WardrobeContext";
 import { ClothingSlot, slotLabels } from "@/lib/wardrobe";
 import { Search, X } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { UIEvent, useEffect, useMemo, useRef, useState } from "react";
 
 type ItemDrawerProps = {
 	activeSlot: ClothingSlot | null;
@@ -19,6 +19,7 @@ export function ItemDrawer({ activeSlot, onClose }: ItemDrawerProps) {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [categoryFilter, setCategoryFilter] = useState("all");
 	const [brandFilter, setBrandFilter] = useState("all");
+	const parallaxFrameRef = useRef<number | null>(null);
 	const items = useMemo(
 		() => (activeSlot ? getItemsForSlot(activeSlot) : []),
 		[activeSlot, getItemsForSlot],
@@ -53,6 +54,38 @@ export function ItemDrawer({ activeSlot, onClose }: ItemDrawerProps) {
 		setBrandFilter("all");
 	}, [activeSlot]);
 
+	useEffect(
+		() => () => {
+			if (parallaxFrameRef.current) cancelAnimationFrame(parallaxFrameRef.current);
+		},
+		[],
+	);
+
+	function updateParallax(container: HTMLElement) {
+		if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+		const containerRect = container.getBoundingClientRect();
+		const center = containerRect.top + containerRect.height / 2;
+
+		container.querySelectorAll<HTMLElement>(".drawer-parallax").forEach((item) => {
+			const rect = item.getBoundingClientRect();
+			const itemCenter = rect.top + rect.height / 2;
+			const progress = Math.max(
+				-1,
+				Math.min(1, (itemCenter - center) / containerRect.height),
+			);
+			item.style.setProperty("--parallax-y", `${(-progress * 5).toFixed(2)}px`);
+		});
+	}
+
+	function handleDrawerScroll(event: UIEvent<HTMLElement>) {
+		const container = event.currentTarget;
+		if (parallaxFrameRef.current) cancelAnimationFrame(parallaxFrameRef.current);
+		parallaxFrameRef.current = requestAnimationFrame(() =>
+			updateParallax(container),
+		);
+	}
+
 	return (
 		<div
 			className={`fixed inset-0 z-40 transition ${
@@ -70,6 +103,7 @@ export function ItemDrawer({ activeSlot, onClose }: ItemDrawerProps) {
 				className={`absolute right-0 top-0 h-full w-full max-w-3xl overflow-y-auto border-l border-stone-950/30 bg-[#f3f1eb] px-4 pb-6 transition-transform duration-300 sm:px-6 ${
 					activeSlot ? "translate-x-0" : "translate-x-full"
 				}`}
+				onScroll={handleDrawerScroll}
 			>
 				<div className="sticky top-0 z-20 -mx-4 bg-[#f3f1eb] sm:-mx-6">
 					<div className="flex items-end justify-between gap-4 border-b border-stone-950/30 px-4 py-5 sm:px-6">
@@ -163,7 +197,7 @@ export function ItemDrawer({ activeSlot, onClose }: ItemDrawerProps) {
 								}}
 								type="button"
 							>
-								<MagneticSurface className="relative aspect-[3/4] overflow-hidden bg-[#e7e4dc]">
+								<MagneticSurface className="drawer-parallax relative aspect-[3/4] overflow-hidden bg-[#e7e4dc]">
 									<Image
 										src={item.imageUrl}
 										alt={item.name}

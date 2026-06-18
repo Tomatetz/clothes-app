@@ -21,8 +21,12 @@ export default function Home() {
 	const [isManaging, setIsManaging] = useState(false);
 
 	return (
-		<main className="min-h-screen bg-[#f3f1eb] px-4 py-4 text-stone-950 sm:px-7 lg:px-10">
-			<div className="mx-auto max-w-[1600px]">
+		<main className="min-h-screen overflow-x-clip bg-[#f3f1eb] px-4 py-4 text-stone-950 sm:px-7 lg:px-10">
+			<div
+				className={`manage-stage mx-auto max-w-[1600px] ${
+					isManaging ? "manage-stage-active" : ""
+				}`}
+			>
 				<header className="flex items-center justify-end gap-6 border-b border-stone-950/30 pb-4">
 					<button
 						className="mb-0.5 inline-flex h-9 items-center justify-center gap-2 border border-stone-950/30 px-3 text-[10px] font-semibold uppercase tracking-[0.16em] transition hover:border-stone-950 hover:bg-stone-950 hover:text-[#f3f1eb]"

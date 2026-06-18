@@ -5,6 +5,7 @@ import { useWardrobe } from "@/context/WardrobeContext";
 import { ClothingSlot, slotLabels } from "@/lib/wardrobe";
 import Image from "next/image";
 import { Minus } from "lucide-react";
+import { useState } from "react";
 
 type ClosetViewProps = {
   slot: ClothingSlot;
@@ -20,13 +21,26 @@ export function ClosetView({
   index
 }: ClosetViewProps) {
   const { clearSelection, getItemsForSlot, getSelectedItem } = useWardrobe();
+  const [removeHovered, setRemoveHovered] = useState(false);
   const selected = getSelectedItem(slot);
   const count = getItemsForSlot(slot).length;
+
+  function removeSelection() {
+    if (!selected) return;
+    clearSelection(slot);
+    setRemoveHovered(false);
+  }
 
   return (
     <article className="group flex h-full min-h-0 flex-col border-stone-950/20 bg-[#f3f1eb] text-left">
       <div className="flex h-full flex-col">
-        <header className="flex items-end justify-between gap-3 border-b border-stone-950/20 px-3 py-3 sm:px-4">
+        <header
+          className={`flex items-end justify-between gap-3 border-b px-3 py-3 transition-colors duration-300 sm:px-4 ${
+            removeHovered
+              ? "border-red-800/25 bg-red-900/[0.055]"
+              : "border-stone-950/20"
+          }`}
+        >
           <button
             className="flex min-w-0 items-baseline gap-2 text-left"
             onClick={onOpen}
@@ -43,9 +57,13 @@ export function ClosetView({
             </span>
           </button>
           <button
-            className="flex size-7 items-center justify-center text-stone-500 transition hover:text-stone-950 disabled:pointer-events-none disabled:opacity-0"
+            className="flex size-8 items-center justify-center border border-transparent text-stone-500 transition duration-300 hover:border-red-800/20 hover:bg-red-900/10 hover:text-red-800 disabled:pointer-events-none disabled:opacity-0"
             disabled={!selected}
-            onClick={() => clearSelection(slot)}
+            onClick={removeSelection}
+            onMouseEnter={() => setRemoveHovered(true)}
+            onMouseLeave={() => setRemoveHovered(false)}
+            onFocus={() => setRemoveHovered(true)}
+            onBlur={() => setRemoveHovered(false)}
             type="button"
             title={`Clear ${slotLabels[slot]}`}
           >
@@ -60,7 +78,7 @@ export function ClosetView({
             type="button"
           >
             <MagneticSurface
-              className={`editorial-wipe relative w-full flex-1 overflow-hidden bg-[#e7e4dc] ${
+              className={`relative w-full flex-1 overflow-hidden bg-[#e7e4dc] ${
                 compact ? "min-h-[260px]" : "min-h-[300px] lg:min-h-0"
               }`}
               key={selected.id}
@@ -69,7 +87,7 @@ export function ClosetView({
                 src={selected.imageUrl}
                 alt={selected.name}
                 fill
-                className="editorial-wipe-image object-cover"
+                className="magnetic-image object-cover"
                 unoptimized
                 priority={slot === "top"}
                 sizes={

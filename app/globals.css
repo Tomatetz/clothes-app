@@ -67,41 +67,90 @@ select:focus-visible {
   outline-offset: 2px;
 }
 
-.editorial-wipe {
-  isolation: isolate;
-}
-
-.editorial-wipe::after {
-  position: absolute;
-  z-index: 2;
-  inset: 0;
-  background: #d8d3c7;
-  content: "";
-  pointer-events: none;
-  transform-origin: right center;
-  animation: editorial-wipe 620ms cubic-bezier(0.76, 0, 0.24, 1) both;
-}
-
-.editorial-wipe-image {
-  transform: translate(var(--magnetic-x), var(--magnetic-y)) scale(1.035);
-  animation: editorial-image-in 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
-  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
 .magnetic-image {
-  transform: translate(var(--magnetic-x), var(--magnetic-y)) scale(1.015);
+  transform: translate(
+      var(--magnetic-x),
+      calc(var(--magnetic-y) + var(--parallax-y))
+    )
+    scale(1.025);
   transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.magnetic-surface:hover .magnetic-image,
-.magnetic-surface:hover .editorial-wipe-image {
-  transform: translate(var(--magnetic-x), var(--magnetic-y)) scale(1.035);
+.magnetic-surface:hover .magnetic-image {
+  transform: translate(
+      var(--magnetic-x),
+      calc(var(--magnetic-y) + var(--parallax-y))
+    )
+    scale(1.04);
+}
+
+.dropdown-unfold {
+  transform-origin: top center;
+  will-change: clip-path, opacity, transform;
+}
+
+.dropdown-unfold-open {
+  pointer-events: auto;
+  animation: dropdown-unfold-open 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.dropdown-unfold-closed {
+  pointer-events: none;
+  animation: dropdown-unfold-close 180ms cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+.dropdown-unfold-open [role="option"] {
+  animation-name: dropdown-option-in;
+  animation-duration: 260ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: both;
+}
+
+.manage-stage {
+  transform-origin: center center;
+  transition:
+    transform 560ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 560ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 560ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.manage-stage-active {
+  filter: saturate(0.72);
+  opacity: 0.72;
+  transform: translateX(-10px) scale(0.982);
+}
+
+.manage-backdrop {
+  opacity: 0;
+  transition: opacity 420ms ease;
+}
+
+.manage-sheet {
+  opacity: 0;
+  transform: translate(-50%, calc(-50% + 26px)) scale(0.985);
+  clip-path: inset(4% 0 0 0);
+  transition:
+    opacity 360ms ease,
+    transform 560ms cubic-bezier(0.22, 1, 0.36, 1),
+    clip-path 560ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, clip-path, opacity;
+}
+
+.manage-mode[data-state="open"] .manage-backdrop {
+  opacity: 1;
+}
+
+.manage-mode[data-state="open"] .manage-sheet {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  clip-path: inset(0);
 }
 
 .editorial-grid-line {
   position: absolute;
   display: block;
   background: rgba(28, 25, 23, 0.38);
+  opacity: 0;
 }
 
 .editorial-grid-line-v {
@@ -134,34 +183,75 @@ select:focus-visible {
     forwards;
 }
 
-@keyframes editorial-wipe {
-  0% {
-    transform: scaleX(1);
+@keyframes dropdown-unfold-open {
+  from {
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(-5px) scaleY(0.94);
   }
-  100% {
-    transform: scaleX(0);
+  to {
+    opacity: 1;
+    clip-path: inset(0);
+    transform: translateY(0) scaleY(1);
   }
 }
 
-@keyframes editorial-image-in {
+@keyframes dropdown-unfold-close {
   from {
-    filter: saturate(0.72);
-    opacity: 0.72;
+    opacity: 1;
+    clip-path: inset(0);
+    transform: translateY(0) scaleY(1);
   }
   to {
-    filter: saturate(1);
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(-4px) scaleY(0.96);
+  }
+}
+
+@keyframes dropdown-option-in {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
 @keyframes draw-grid-vertical {
+  0% {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+  12% {
+    opacity: 1;
+  }
+  82% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
   to {
+    opacity: 0;
     transform: scaleY(1);
   }
 }
 
 @keyframes draw-grid-horizontal {
+  0% {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  12% {
+    opacity: 1;
+  }
+  82% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
   to {
+    opacity: 0;
     transform: scaleX(1);
   }
 }

@@ -10,6 +10,7 @@ type MagneticSurfaceProps = {
 type MagneticStyle = CSSProperties & {
 	"--magnetic-x": string;
 	"--magnetic-y": string;
+	"--parallax-y": string;
 };
 
 export function MagneticSurface({
@@ -41,6 +42,7 @@ export function MagneticSurface({
 				{
 					"--magnetic-x": "0px",
 					"--magnetic-y": "0px",
+					"--parallax-y": "0px",
 				} as MagneticStyle
 			}
 		>
