@@ -171,7 +171,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
         onClick={onClose}
       />
       <section
-        className={`absolute left-1/2 top-1/2 flex max-h-[92vh] w-[min(1120px,calc(100vw-24px))] -translate-x-1/2 overflow-hidden rounded-lg border border-white/90 bg-white/30 shadow-[0_30px_100px_rgba(0,0,0,0.48),0_0_0_1px_rgba(255,255,255,0.35)] backdrop-blur-xl transition duration-300 ${
+        className={`absolute left-1/2 top-1/2 flex max-h-[92vh] w-[min(1120px,calc(100vw-24px))] -translate-x-1/2 overflow-hidden rounded-md border border-white/90 bg-white/30 shadow-[0_18px_48px_rgba(0,0,0,0.56),0_4px_14px_rgba(0,0,0,0.28),0_0_0_1px_rgba(255,255,255,0.35)] backdrop-blur-xl transition duration-300 ${
           open ? "-translate-y-1/2 opacity-100" : "translate-y-4 opacity-0"
         }`}
       >
