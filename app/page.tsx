@@ -34,7 +34,12 @@ export default function Home() {
 					</button>
 				</header>
 
-				<section className="border-b border-stone-950/30 lg:grid lg:h-[calc(100vh-146px)] lg:min-h-[620px] lg:grid-cols-12">
+				<section className="editorial-grid relative border-b border-stone-950/30 lg:grid lg:h-[calc(100vh-146px)] lg:min-h-[620px] lg:grid-cols-12">
+					<div className="editorial-grid-lines pointer-events-none absolute inset-0 z-10 hidden lg:block" aria-hidden="true">
+						<span className="editorial-grid-line editorial-grid-line-v editorial-grid-line-v-one" />
+						<span className="editorial-grid-line editorial-grid-line-v editorial-grid-line-v-two" />
+						<span className="editorial-grid-line editorial-grid-line-h" />
+					</div>
 					<div className="grid border-stone-950/20 md:grid-cols-2 lg:col-span-9 lg:grid-rows-2 lg:border-r">
 						{outfitSlots.map((slot) => (
 							<div

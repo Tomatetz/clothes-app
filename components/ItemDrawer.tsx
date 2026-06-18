@@ -2,6 +2,7 @@
 
 import { CustomSelect } from "@/components/CustomSelect";
 import { HighlightedText } from "@/components/HighlightedText";
+import { MagneticSurface } from "@/components/MagneticSurface";
 import { useWardrobe } from "@/context/WardrobeContext";
 import { ClothingSlot, slotLabels } from "@/lib/wardrobe";
 import { Search, X } from "lucide-react";
@@ -162,12 +163,12 @@ export function ItemDrawer({ activeSlot, onClose }: ItemDrawerProps) {
 								}}
 								type="button"
 							>
-								<div className="relative aspect-[3/4] overflow-hidden bg-[#e7e4dc]">
+								<MagneticSurface className="relative aspect-[3/4] overflow-hidden bg-[#e7e4dc]">
 									<Image
 										src={item.imageUrl}
 										alt={item.name}
 										fill
-										className="object-cover transition duration-700 group-hover/item:scale-[1.025]"
+										className="magnetic-image object-cover"
 										unoptimized
 										sizes="(max-width: 640px) 50vw, 240px"
 									/>
@@ -176,7 +177,7 @@ export function ItemDrawer({ activeSlot, onClose }: ItemDrawerProps) {
 											Selected
 										</span>
 									)}
-								</div>
+								</MagneticSurface>
 								<div className="min-w-0 p-3">
 									<div className={`fashion-display line-clamp-2 text-xl leading-[0.95] tracking-[-0.025em] ${isSelected ? "text-[#f3f1eb]" : "text-stone-950"}`}>
 										<HighlightedText query={searchQuery} text={item.name} />

@@ -1,5 +1,6 @@
 "use client";
 
+import { MagneticSurface } from "@/components/MagneticSurface";
 import { useWardrobe } from "@/context/WardrobeContext";
 import { ClothingSlot, slotLabels } from "@/lib/wardrobe";
 import Image from "next/image";
@@ -58,16 +59,17 @@ export function ClosetView({
             onClick={onOpen}
             type="button"
           >
-            <div
-              className={`relative w-full flex-1 overflow-hidden bg-[#e7e4dc] ${
+            <MagneticSurface
+              className={`editorial-wipe relative w-full flex-1 overflow-hidden bg-[#e7e4dc] ${
                 compact ? "min-h-[260px]" : "min-h-[300px] lg:min-h-0"
               }`}
+              key={selected.id}
             >
               <Image
                 src={selected.imageUrl}
                 alt={selected.name}
                 fill
-                className="object-cover transition duration-700 ease-out group-hover:scale-[1.025] group-focus-within:scale-[1.025]"
+                className="editorial-wipe-image object-cover"
                 unoptimized
                 priority={slot === "top"}
                 sizes={
@@ -79,7 +81,7 @@ export function ClosetView({
               <span className="absolute bottom-3 right-3 translate-y-1 text-[10px] font-medium uppercase tracking-[0.2em] text-white opacity-0 mix-blend-difference transition duration-500 group-hover:translate-y-0 group-hover:opacity-100">
                 View selection
               </span>
-            </div>
+            </MagneticSurface>
             <div className="h-[74px] min-w-0 shrink-0 border-t border-stone-950/20 px-3 py-3 sm:px-4">
               <div className="fashion-display truncate text-[clamp(1.45rem,2vw,2.15rem)] leading-[0.95] tracking-[-0.035em] text-stone-950">
                 {selected.name}
