@@ -129,37 +129,52 @@ select:focus-visible {
     overflow 0s 420ms;
 }
 
-.mode-bag-wipe {
+.mode-bag-wipe,
+.mode-grid-wipe {
   visibility: hidden;
 }
 
-.mode-bag-wipe-fill {
-  background: #dedbd1;
+.mode-bag-wipe-fill,
+.mode-grid-wipe-fill {
   opacity: 0;
+  clip-path: inset(0 0 100% 0);
+  -webkit-backdrop-filter: blur(14px) saturate(0.78);
+  backdrop-filter: blur(14px) saturate(0.78);
+}
+
+.mode-bag-wipe-fill {
+  background: rgba(222, 219, 209, 0.68);
+}
+
+.mode-grid-wipe-fill {
+  background: rgba(232, 235, 231, 0.62);
 }
 
 .mode-canvas-to-manage .mode-bag-wipe,
-.mode-canvas-to-outfit .mode-bag-wipe {
+.mode-canvas-to-outfit .mode-bag-wipe,
+.mode-canvas-to-manage .mode-grid-wipe,
+.mode-canvas-to-outfit .mode-grid-wipe {
   visibility: visible;
 }
 
-.mode-canvas-to-manage .mode-bag-wipe-fill {
-  animation: bag-fill-down 560ms cubic-bezier(0.76, 0, 0.24, 1) both;
-  transform-origin: top;
-}
-
-.mode-canvas-to-manage .mode-bag-wipe-line {
-  animation: bag-line-down 560ms cubic-bezier(0.76, 0, 0.24, 1) both;
-}
-
+.mode-canvas-to-manage .mode-bag-wipe-fill,
 .mode-canvas-to-outfit .mode-bag-wipe-fill {
-  animation: bag-fill-up 560ms cubic-bezier(0.76, 0, 0.24, 1) both;
-  background: #f3f1eb;
-  transform-origin: bottom;
+  animation: bag-curtain-fill-up 720ms cubic-bezier(0.76, 0, 0.24, 1) both;
 }
 
+.mode-canvas-to-manage .mode-grid-wipe-fill,
+.mode-canvas-to-outfit .mode-grid-wipe-fill {
+  animation: bag-curtain-fill 720ms cubic-bezier(0.76, 0, 0.24, 1) both;
+}
+
+.mode-canvas-to-manage .mode-bag-wipe-line,
 .mode-canvas-to-outfit .mode-bag-wipe-line {
-  animation: bag-line-up 560ms cubic-bezier(0.76, 0, 0.24, 1) both;
+  animation: bag-curtain-line-up 720ms cubic-bezier(0.76, 0, 0.24, 1) both;
+}
+
+.mode-canvas-to-manage .mode-grid-wipe-line,
+.mode-canvas-to-outfit .mode-grid-wipe-line {
+  animation: bag-curtain-line 720ms cubic-bezier(0.76, 0, 0.24, 1) both;
 }
 
 @keyframes dropdown-unfold-open {
@@ -175,64 +190,66 @@ select:focus-visible {
   }
 }
 
-@keyframes bag-fill-down {
+@keyframes bag-curtain-fill {
   0% {
     opacity: 1;
-    transform: scaleY(0);
+    clip-path: inset(0 0 100% 0);
   }
-  50%,
-  82% {
+  48%,
+  52% {
     opacity: 1;
-    transform: scaleY(1);
+    clip-path: inset(0);
   }
   100% {
-    opacity: 0;
-    transform: scaleY(1);
+    opacity: 1;
+    clip-path: inset(0 0 100% 0);
   }
 }
 
-@keyframes bag-line-down {
-  from {
+@keyframes bag-curtain-line {
+  0% {
     top: 0;
     opacity: 1;
   }
-  82% {
+  48%,
+  52% {
     top: 100%;
     opacity: 1;
   }
-  to {
-    top: 100%;
+  100% {
+    top: 0;
     opacity: 0;
   }
 }
 
-@keyframes bag-fill-up {
+@keyframes bag-curtain-fill-up {
   0% {
     opacity: 1;
-    transform: scaleY(0);
+    clip-path: inset(100% 0 0 0);
   }
-  50%,
-  82% {
+  48%,
+  52% {
     opacity: 1;
-    transform: scaleY(1);
+    clip-path: inset(0);
   }
   100% {
-    opacity: 0;
-    transform: scaleY(1);
+    opacity: 1;
+    clip-path: inset(100% 0 0 0);
   }
 }
 
-@keyframes bag-line-up {
-  from {
+@keyframes bag-curtain-line-up {
+  0% {
     top: 100%;
     opacity: 1;
   }
-  82% {
+  48%,
+  52% {
     top: 0;
     opacity: 1;
   }
-  to {
-    top: 0;
+  100% {
+    top: 100%;
     opacity: 0;
   }
 }

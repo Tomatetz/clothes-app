@@ -37,10 +37,10 @@ export default function Home() {
 		const nextManaging = !isManaging;
 		setModeTransition(nextManaging ? "to-manage" : "to-outfit");
 
-		window.setTimeout(() => setIsManaging(nextManaging), 260);
+		window.setTimeout(() => setIsManaging(nextManaging), 360);
 		transitionTimerRef.current = setTimeout(
 			() => setModeTransition(null),
-			620,
+			740,
 		);
 	}
 
@@ -66,10 +66,10 @@ export default function Home() {
 					}`}
 				>
 				<section
-					className={`absolute inset-0 border-b border-stone-950/30 bg-[#f3f1eb] transition-opacity duration-300 lg:grid lg:grid-cols-12 ${
+					className={`inset-0 border-b border-stone-950/30 bg-[#f3f1eb] transition-opacity duration-300 lg:absolute lg:grid lg:grid-cols-12 ${
 						isManaging
-							? "pointer-events-none opacity-0"
-							: "pointer-events-auto opacity-100"
+							? "absolute pointer-events-none opacity-0"
+							: "relative pointer-events-auto opacity-100"
 					}`}
 					aria-hidden={isManaging}
 				>
@@ -104,6 +104,13 @@ export default function Home() {
 					>
 						<span className="mode-bag-wipe-fill absolute inset-0" />
 						<span className="mode-bag-wipe-line absolute left-0 right-0 h-px bg-stone-950/55" />
+					</div>
+					<div
+						className="mode-grid-wipe pointer-events-none absolute bottom-0 left-0 top-0 z-30 hidden w-3/4 overflow-hidden lg:block"
+						aria-hidden="true"
+					>
+						<span className="mode-grid-wipe-fill absolute inset-0" />
+						<span className="mode-grid-wipe-line absolute left-0 right-0 h-px bg-stone-950/45" />
 					</div>
 				</div>
 

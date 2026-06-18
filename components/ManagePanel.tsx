@@ -113,8 +113,17 @@ export function ManagePanel({ active }: ManagePanelProps) {
 		setPhotoFile(null);
 
 		requestAnimationFrame(() => {
-			panelScrollRef.current?.scrollTo({ top: 0, behavior: "smooth" });
-			formRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+			if (window.matchMedia("(min-width: 1024px)").matches) {
+				panelScrollRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+				formRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+				return;
+			}
+
+			const formTop =
+				(formRef.current?.getBoundingClientRect().top ?? 0) +
+				window.scrollY -
+				16;
+			window.scrollTo({ top: formTop, behavior: "smooth" });
 		});
 	}
 
@@ -212,16 +221,16 @@ export function ManagePanel({ active }: ManagePanelProps) {
 	return (
 		<section
 			ref={panelScrollRef}
-			className={`manage-inline absolute inset-0 grid min-h-[620px] border-b border-stone-950/30 bg-[#e8ebe7] transition-opacity duration-300 lg:h-full lg:grid-cols-12 lg:overflow-hidden ${
+			className={`manage-inline inset-0 grid border-b border-stone-950/30 bg-[#e8ebe7] transition-opacity duration-300 lg:absolute lg:h-full lg:min-h-[620px] lg:grid-cols-12 lg:overflow-hidden ${
 				active
-					? "pointer-events-auto opacity-100"
-					: "pointer-events-none opacity-0"
+					? "relative pointer-events-auto opacity-100"
+					: "absolute pointer-events-none opacity-0"
 			}`}
 			aria-hidden={!active}
 		>
 			<form
 				ref={formRef}
-				className="order-1 border-b border-stone-950/30 bg-[#dedbd1] px-5 pb-6 lg:order-2 lg:col-span-3 lg:h-full lg:overflow-y-auto lg:border-b-0 lg:border-l overscroll-y-none"
+				className="order-1 border-b border-stone-950/30 bg-[#dedbd1] px-5 pb-6 lg:order-2 lg:col-span-3 lg:h-full lg:overflow-y-auto lg:border-b-0 lg:border-l lg:overscroll-y-none"
 				onSubmit={handleSubmit}
 			>
 				<div className="-mx-5 mb-5 border-b border-stone-950/30 bg-[#dedbd1] px-5 py-5 lg:sticky lg:top-0 lg:z-20">
@@ -371,7 +380,7 @@ export function ManagePanel({ active }: ManagePanelProps) {
 				)}
 			</form>
 
-			<div className="order-2 min-w-0 overflow-x-hidden bg-[#e8ebe7] pb-5 lg:order-1 lg:col-span-9 lg:h-full lg:overflow-y-auto overscroll-y-none">
+			<div className="order-2 min-w-0 overflow-x-hidden bg-[#e8ebe7] pb-5 lg:order-1 lg:col-span-9 lg:h-full lg:overflow-y-auto lg:overscroll-y-none">
 				<div
 					className={`manage-filter-row sticky top-0 z-10 mb-0 overflow-visible border-b border-stone-950/30 bg-[#e8ebe7] ${
 						active ? "manage-filter-row-open" : ""
