@@ -120,17 +120,12 @@ export function ItemDrawer({ activeSlot, onClose }: ItemDrawerProps) {
           activeSlot ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <div className="sticky top-0 z-20 -mx-5 mb-5 flex items-center justify-between gap-4 border-b border-white/50 bg-white/20 px-5 py-4 backdrop-blur-md sm:-mx-6 sm:px-6">
-          <div>
-            <p className="text-xs font-medium uppercase text-stone-500">
-              Pick item
-            </p>
-            <h2 className="mt-0.5 text-2xl font-semibold text-stone-950">
-              {activeSlot ? slotLabels[activeSlot] : "Items"}
-            </h2>
-          </div>
+        <div className="sticky top-0 z-20 -mx-5 mb-3 flex min-h-16 items-center justify-between gap-4 border-b border-white/50 bg-white/20 px-5 py-3 backdrop-blur-md sm:-mx-6 sm:px-6">
+          <h2 className="text-xl font-semibold text-stone-950">
+            {activeSlot ? slotLabels[activeSlot] : "Items"}
+          </h2>
           <button
-            className="flex size-10 items-center justify-center rounded-md bg-white/60 text-stone-700 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-xl transition hover:bg-white/85 hover:ring-stone-950/20"
+            className="flex size-9 items-center justify-center rounded-md bg-white/60 text-stone-700 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-xl transition hover:bg-white/85 hover:ring-stone-950/20"
             onClick={onClose}
             type="button"
             title="Close"
@@ -139,57 +134,47 @@ export function ItemDrawer({ activeSlot, onClose }: ItemDrawerProps) {
           </button>
         </div>
 
-        <div className="mb-4 grid gap-3">
-          <label className="relative block">
+        <div className="sticky top-16 z-10 -mx-5 mb-3 grid grid-cols-2 gap-2 border-b border-white/40 bg-white/20 px-5 py-3 backdrop-blur-md sm:-mx-6 sm:grid-cols-[minmax(180px,1fr)_150px_150px] sm:px-6">
+          <label className="relative col-span-2 block sm:col-span-1">
             <Search
               className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-stone-400"
               size={18}
             />
             <input
-              className="h-11 w-full rounded-md border-0 bg-white/65 pl-10 pr-3 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md placeholder:text-stone-500"
+              className="h-10 w-full rounded-md border-0 bg-white/65 pl-9 pr-3 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md placeholder:text-stone-500"
               value={searchQuery}
               onChange={(event) => setSearchQuery(event.target.value)}
               placeholder="Search by name or brand"
             />
           </label>
 
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <label className="block">
-              <span className="mb-1.5 block text-xs font-medium uppercase text-stone-500">
-                Category
-              </span>
-              <select
-                className="h-10 w-full rounded-md border-0 bg-white/65 px-3 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md"
-                value={categoryFilter}
-                onChange={(event) => setCategoryFilter(event.target.value)}
-              >
-                <option value="all">All categories</option>
-                {categoryOptions.map((category) => (
-                  <option key={category} value={category}>
-                    {category}
-                  </option>
-                ))}
-              </select>
-            </label>
+          <select
+            className="h-10 min-w-0 rounded-md border-0 bg-white/65 px-3 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md"
+            value={categoryFilter}
+            onChange={(event) => setCategoryFilter(event.target.value)}
+            aria-label="Category"
+          >
+            <option value="all">All categories</option>
+            {categoryOptions.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
 
-            <label className="block">
-              <span className="mb-1.5 block text-xs font-medium uppercase text-stone-500">
-                Brand
-              </span>
-              <select
-                className="h-10 w-full rounded-md border-0 bg-white/65 px-3 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md"
-                value={brandFilter}
-                onChange={(event) => setBrandFilter(event.target.value)}
-              >
-                <option value="all">All brands</option>
-                {brandOptions.map((brand) => (
-                  <option key={brand} value={brand}>
-                    {brand}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
+          <select
+            className="h-10 min-w-0 rounded-md border-0 bg-white/65 px-3 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md"
+            value={brandFilter}
+            onChange={(event) => setBrandFilter(event.target.value)}
+            aria-label="Brand"
+          >
+            <option value="all">All brands</option>
+            {brandOptions.map((brand) => (
+              <option key={brand} value={brand}>
+                {brand}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="grid gap-3">
