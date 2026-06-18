@@ -173,15 +173,10 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
       >
         <div className="grid h-[92vh] max-h-[92vh] w-full grid-cols-1 overflow-y-auto lg:grid-cols-[420px_1fr] lg:overflow-hidden">
           <form className="border-b border-white/45 bg-white/15 px-5 pb-5 lg:h-full lg:overflow-y-auto lg:border-b-0 lg:border-r" onSubmit={handleSubmit}>
-            <div className="-mx-5 mb-5 flex items-start justify-between gap-4 border-b border-white/40 bg-white/45 px-5 py-4 backdrop-blur-xl lg:sticky lg:top-0 lg:z-20">
-              <div>
-                <p className="text-xs font-medium uppercase text-stone-500">
-                  Wardrobe
-                </p>
-                <h2 className="mt-0.5 text-2xl font-semibold text-stone-950">
-                  {editingItemId ? "Edit clothes" : "Add clothes"}
-                </h2>
-              </div>
+            <div className="-mx-5 mb-5 flex min-h-16 items-center justify-between gap-4 border-b border-white/40 bg-white/45 px-5 py-3 backdrop-blur-xl lg:sticky lg:top-0 lg:z-20">
+              <h2 className="text-xl font-semibold text-stone-950">
+                {editingItemId ? "Edit clothes" : "Add clothes"}
+              </h2>
               <button
                 className="flex size-10 items-center justify-center rounded-md bg-white/55 text-stone-700 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md transition hover:bg-white/80 hover:ring-stone-950/20"
                 onClick={onClose}
@@ -326,7 +321,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
           </form>
 
           <div className="bg-white/10 px-5 pb-5 lg:h-full lg:overflow-y-auto">
-            <div className="sticky top-0 z-10 -mx-5 mb-4 border-b border-white/40 bg-white/45 px-5 py-3 backdrop-blur-xl">
+            <div className="sticky top-0 z-10 -mx-5 mb-4 min-h-16 border-b border-white/40 bg-white/45 px-5 py-3 backdrop-blur-xl">
               <div className="grid grid-cols-[1fr_auto] gap-2 lg:grid-cols-[minmax(180px,1fr)_150px_150px_auto]">
                 <label className="relative block">
                   <Search
