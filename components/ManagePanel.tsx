@@ -352,18 +352,53 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
           </form>
 
           <div className="bg-white/10 px-5 pb-5 lg:h-full lg:overflow-y-auto">
-            <div className="sticky top-0 z-10 -mx-5 mb-4 border-b border-white/40 bg-white/45 px-5 py-4 backdrop-blur-xl">
-              <div className="mb-4 flex items-end justify-between gap-3">
-                <div>
-                  <p className="text-xs font-medium uppercase text-stone-500">
-                    Saved locally
-                  </p>
-                  <h3 className="mt-0.5 text-xl font-semibold text-stone-950">
-                    All clothes
-                  </h3>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="rounded-full bg-white/55 px-2.5 py-1 text-sm font-medium text-stone-600 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md">
+            <div className="sticky top-0 z-10 -mx-5 mb-4 border-b border-white/40 bg-white/45 px-5 py-3 backdrop-blur-xl">
+              <div className="grid grid-cols-[1fr_auto] gap-2 lg:grid-cols-[minmax(180px,1fr)_150px_150px_auto]">
+                <label className="relative block">
+                  <Search
+                    className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-stone-400"
+                    size={17}
+                  />
+                  <input
+                    className="h-10 w-full rounded-md border-0 bg-white/60 pl-9 pr-3 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md placeholder:text-stone-500"
+                    value={listSearchQuery}
+                    onChange={(event) => setListSearchQuery(event.target.value)}
+                    placeholder="Search by name or brand"
+                  />
+                </label>
+
+                <select
+                  className="col-span-2 h-10 min-w-0 rounded-md border-0 bg-white/60 px-3 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md lg:col-span-1"
+                  value={listCategoryFilter}
+                  onChange={(event) =>
+                    setListCategoryFilter(event.target.value)
+                  }
+                  aria-label="Category"
+                >
+                  <option value="all">All categories</option>
+                  {listCategoryOptions.map((itemCategory) => (
+                    <option key={itemCategory} value={itemCategory}>
+                      {itemCategory}
+                    </option>
+                  ))}
+                </select>
+
+                <select
+                  className="col-span-2 h-10 min-w-0 rounded-md border-0 bg-white/60 px-3 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md lg:col-span-1"
+                  value={listBrandFilter}
+                  onChange={(event) => setListBrandFilter(event.target.value)}
+                  aria-label="Brand"
+                >
+                  <option value="all">All brands</option>
+                  {listBrandOptions.map((itemBrand) => (
+                    <option key={itemBrand} value={itemBrand}>
+                      {itemBrand}
+                    </option>
+                  ))}
+                </select>
+
+                <div className="row-start-1 flex items-center gap-2 lg:col-start-4">
+                  <span className="rounded-full bg-white/55 px-2.5 py-1 text-xs font-medium text-stone-600 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md">
                     {filteredItems.length}/{items.length}
                   </span>
                   <button
@@ -374,63 +409,6 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
                   >
                     <X size={17} />
                   </button>
-                </div>
-              </div>
-
-              <div className="grid gap-3">
-                <label className="relative block">
-                  <Search
-                    className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-stone-400"
-                    size={18}
-                  />
-                  <input
-                    className="h-11 w-full rounded-md border-0 bg-white/60 pl-10 pr-3 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md placeholder:text-stone-500"
-                    value={listSearchQuery}
-                    onChange={(event) => setListSearchQuery(event.target.value)}
-                    placeholder="Search by name or brand"
-                  />
-                </label>
-
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  <label className="block">
-                    <span className="mb-1.5 block text-xs font-medium uppercase text-stone-500">
-                      Category
-                    </span>
-                    <select
-                      className="h-10 w-full rounded-md border-0 bg-white/60 px-3 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md"
-                      value={listCategoryFilter}
-                      onChange={(event) =>
-                        setListCategoryFilter(event.target.value)
-                      }
-                    >
-                      <option value="all">All categories</option>
-                      {listCategoryOptions.map((itemCategory) => (
-                        <option key={itemCategory} value={itemCategory}>
-                          {itemCategory}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-
-                  <label className="block">
-                    <span className="mb-1.5 block text-xs font-medium uppercase text-stone-500">
-                      Brand
-                    </span>
-                    <select
-                      className="h-10 w-full rounded-md border-0 bg-white/60 px-3 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md"
-                      value={listBrandFilter}
-                      onChange={(event) =>
-                        setListBrandFilter(event.target.value)
-                      }
-                    >
-                      <option value="all">All brands</option>
-                      {listBrandOptions.map((itemBrand) => (
-                        <option key={itemBrand} value={itemBrand}>
-                          {itemBrand}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
                 </div>
               </div>
             </div>
