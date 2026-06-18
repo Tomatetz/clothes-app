@@ -37,7 +37,7 @@ export default function Home() {
         </header>
 
         <section className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1fr)_312px]">
-          <div className="grid gap-3">
+          <div className="grid content-start gap-3 md:grid-cols-2">
             {outfitSlots.map((slot) => (
               <ClosetView
                 key={slot}
