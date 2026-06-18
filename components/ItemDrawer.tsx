@@ -3,7 +3,7 @@
 import { useWardrobe } from "@/context/WardrobeContext";
 import { ClothingSlot, seasonLabel, slotLabels } from "@/lib/wardrobe";
 import Image from "next/image";
-import { Check, Search, X } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 type ItemDrawerProps = {
@@ -202,7 +202,7 @@ export function ItemDrawer({ activeSlot, onClose }: ItemDrawerProps) {
             return (
               <button
                 key={item.id}
-                className={`grid grid-cols-[86px_1fr_auto] items-center gap-3 rounded-md bg-white/50 p-2 text-left shadow-[0_8px_24px_rgba(28,25,23,0.06)] ring-1 backdrop-blur-xl transition duration-200 sm:grid-cols-[112px_1fr_auto] sm:p-2.5 ${
+                className={`grid grid-cols-[86px_1fr] items-center gap-3 rounded-md bg-white/50 p-2 text-left shadow-[0_8px_24px_rgba(28,25,23,0.06)] ring-1 backdrop-blur-xl transition duration-200 sm:grid-cols-[112px_1fr] sm:p-2.5 ${
                   isSelected
                     ? "bg-emerald-50/65 ring-2 ring-emerald-700"
                     : isSelectedElsewhere
@@ -247,15 +247,6 @@ export function ItemDrawer({ activeSlot, onClose }: ItemDrawerProps) {
                     )}
                   </div>
                 </div>
-                <span
-                  className={`flex size-9 items-center justify-center rounded-full transition ${
-                    isSelected
-                      ? "bg-emerald-800 text-white shadow-md ring-2 ring-white/70"
-                      : "bg-white/45 text-stone-400 ring-1 ring-stone-950/10"
-                  }`}
-                >
-                  <Check size={17} />
-                </span>
               </button>
             );
           })}
