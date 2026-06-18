@@ -1,7 +1,7 @@
 "use client";
 
 import { useWardrobe } from "@/context/WardrobeContext";
-import { ClothingSlot, seasonLabel, slotLabels } from "@/lib/wardrobe";
+import { ClothingSlot, slotLabels } from "@/lib/wardrobe";
 import Image from "next/image";
 import { Search, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
@@ -236,9 +236,6 @@ export function ItemDrawer({ activeSlot, onClose }: ItemDrawerProps) {
                   <div className="mt-2 flex flex-wrap gap-2 text-xs text-stone-600">
                     <span className="rounded-full bg-stone-100/85 px-2.5 py-1">
                       {item.category}
-                    </span>
-                    <span className="rounded-full bg-stone-100/85 px-2.5 py-1">
-                      {seasonLabel(item.season)}
                     </span>
                     {selectedElsewhere && (
                       <span className="rounded-full bg-stone-200/80 px-2.5 py-1 text-stone-700">

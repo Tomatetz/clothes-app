@@ -1,12 +1,11 @@
 import { createClient } from "@supabase/supabase-js";
-import { ClothingSlot, Season, WardrobeItem } from "@/lib/wardrobe";
+import { ClothingSlot, WardrobeItem } from "@/lib/wardrobe";
 
 type ClothesRow = {
   id: string;
   name: string;
   category: string;
   brand: string;
-  season: Season;
   image_url: string;
   slots: ClothingSlot[];
   created_at: string;
@@ -60,7 +59,6 @@ export function clothesRowToItem(row: ClothesRow): WardrobeItem {
     name: row.name,
     category: row.category,
     brand: row.brand,
-    season: row.season,
     imageUrl: row.image_url,
     slots: row.slots
   };
@@ -71,7 +69,6 @@ export function itemToClothesInsert(item: ClothesPayload) {
     name: item.name,
     category: item.category,
     brand: item.brand,
-    season: item.season,
     image_url: item.imageUrl,
     slots: item.slots
   };
@@ -96,10 +93,6 @@ export function isClothingSlot(value: unknown): value is ClothingSlot {
   );
 }
 
-export function isSeason(value: unknown): value is Season {
-  return value === "summer" || value === "winter" || value === "all-season";
-}
-
 export function parseClothesPayload(input: unknown): ClothesPayload {
   if (!input || typeof input !== "object") {
     throw new Error("Invalid item payload");
@@ -111,7 +104,6 @@ export function parseClothesPayload(input: unknown): ClothesPayload {
     typeof payload.name !== "string" ||
     typeof payload.category !== "string" ||
     typeof payload.brand !== "string" ||
-    !isSeason(payload.season) ||
     typeof payload.imageUrl !== "string" ||
     !Array.isArray(payload.slots) ||
     !payload.slots.every(isClothingSlot)
@@ -123,7 +115,6 @@ export function parseClothesPayload(input: unknown): ClothesPayload {
     name: payload.name.trim(),
     category: payload.category.trim(),
     brand: payload.brand.trim(),
-    season: payload.season,
     imageUrl: payload.imageUrl,
     slots: payload.slots
   };

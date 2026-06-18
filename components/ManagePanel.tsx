@@ -5,8 +5,6 @@ import {
   categories,
   ClothingSlot,
   defaultSlotByCategory,
-  seasonLabel,
-  Season,
   slotLabels
 } from "@/lib/wardrobe";
 import Image from "next/image";
@@ -15,7 +13,6 @@ import { ImagePlus, Search, Trash2, X } from "lucide-react";
 import { SlotIcon } from "@/components/SlotIcon";
 
 const fallbackImage = "/samples/item.svg";
-const seasons: Season[] = ["all-season", "summer", "winter"];
 const allSlots: ClothingSlot[] = ["top", "outerTop", "bottom", "shoes", "bag"];
 
 type ManagePanelProps = {
@@ -32,7 +29,6 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
   const [name, setName] = useState("");
   const [category, setCategory] = useState(categories[0]);
   const [brand, setBrand] = useState("");
-  const [season, setSeason] = useState<Season>("all-season");
   const [slots, setSlots] = useState<ClothingSlot[]>(defaultSlotByCategory[categories[0]]);
   const [imageUrl, setImageUrl] = useState(fallbackImage);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
@@ -73,7 +69,6 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
     setName("");
     setCategory(categories[0]);
     setBrand("");
-    setSeason("all-season");
     setSlots(defaultSlotByCategory[categories[0]]);
     setImageUrl(fallbackImage);
     setPhotoFile(null);
@@ -87,7 +82,6 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
     setName(item.name);
     setCategory(item.category);
     setBrand(item.brand);
-    setSeason(item.season);
     setSlots(item.slots);
     setImageUrl(item.imageUrl);
     setPhotoFile(null);
@@ -136,7 +130,6 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
       name: name.trim() || category,
       category,
       brand: brand.trim() || "No brand",
-      season,
       imageUrl: finalImageUrl,
       slots
     };
@@ -224,43 +217,24 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
               />
             </label>
 
-            <div className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-              <label className="block">
-                <span className="mb-1.5 block text-sm font-medium text-stone-700">
-                  Category
-                </span>
-                <select
-                  className="h-11 w-full rounded-md border-0 bg-white/60 px-3 text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md"
-                  value={category}
-                  onChange={(event) => {
-                    const nextCategory = event.target.value;
-                    setCategory(nextCategory);
-                    setSlots(defaultSlotByCategory[nextCategory] ?? ["top"]);
-                  }}
-                >
-                  {categories.map((itemCategory) => (
-                    <option key={itemCategory}>{itemCategory}</option>
-                  ))}
-                </select>
-              </label>
-
-              <label className="block">
-                <span className="mb-1.5 block text-sm font-medium text-stone-700">
-                  Season
-                </span>
-                <select
-                  className="h-11 w-full rounded-md border-0 bg-white/60 px-3 text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md"
-                  value={season}
-                  onChange={(event) => setSeason(event.target.value as Season)}
-                >
-                  {seasons.map((itemSeason) => (
-                    <option key={itemSeason} value={itemSeason}>
-                      {seasonLabel(itemSeason)}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </div>
+            <label className="mb-4 block">
+              <span className="mb-1.5 block text-sm font-medium text-stone-700">
+                Category
+              </span>
+              <select
+                className="h-11 w-full rounded-md border-0 bg-white/60 px-3 text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md"
+                value={category}
+                onChange={(event) => {
+                  const nextCategory = event.target.value;
+                  setCategory(nextCategory);
+                  setSlots(defaultSlotByCategory[nextCategory] ?? ["top"]);
+                }}
+              >
+                {categories.map((itemCategory) => (
+                  <option key={itemCategory}>{itemCategory}</option>
+                ))}
+              </select>
+            </label>
 
             <label className="mb-4 block">
               <span className="mb-1.5 block text-sm font-medium text-stone-700">

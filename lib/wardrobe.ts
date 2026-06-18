@@ -1,13 +1,10 @@
 export type ClothingSlot = "top" | "outerTop" | "bottom" | "shoes" | "bag";
 
-export type Season = "summer" | "winter" | "all-season";
-
 export type WardrobeItem = {
   id: string;
   name: string;
   category: string;
   brand: string;
-  season: Season;
   imageUrl: string;
   slots: ClothingSlot[];
 };
@@ -70,7 +67,6 @@ export const starterItems: WardrobeItem[] = [
     name: "Denim Utility Jumpsuit",
     category: "Overalls & Jumpsuits",
     brand: "Ader",
-    season: "all-season",
     imageUrl: "/samples/jumpsuit.svg",
     slots: ["top", "bottom"]
   },
@@ -79,7 +75,6 @@ export const starterItems: WardrobeItem[] = [
     name: "Rib Knit Sweater",
     category: "Knitwear",
     brand: "COS",
-    season: "winter",
     imageUrl: "/samples/knitwear.svg",
     slots: ["top", "outerTop"]
   },
@@ -88,7 +83,6 @@ export const starterItems: WardrobeItem[] = [
     name: "Camel Wool Coat",
     category: "Coats",
     brand: "Max Mara",
-    season: "winter",
     imageUrl: "/samples/coat.svg",
     slots: ["top", "outerTop"]
   },
@@ -97,7 +91,6 @@ export const starterItems: WardrobeItem[] = [
     name: "Silver Down Jacket",
     category: "Down Jackets",
     brand: "Uniqlo",
-    season: "winter",
     imageUrl: "/samples/down-jacket.svg",
     slots: ["top", "outerTop"]
   },
@@ -106,7 +99,6 @@ export const starterItems: WardrobeItem[] = [
     name: "Cropped Shearling",
     category: "Fur & Shearling",
     brand: "Acne Studios",
-    season: "winter",
     imageUrl: "/samples/shearling.svg",
     slots: ["top", "outerTop"]
   },
@@ -115,7 +107,6 @@ export const starterItems: WardrobeItem[] = [
     name: "Black Leather Jacket",
     category: "Jackets",
     brand: "AllSaints",
-    season: "all-season",
     imageUrl: "/samples/jacket.svg",
     slots: ["top", "outerTop"]
   },
@@ -124,7 +115,6 @@ export const starterItems: WardrobeItem[] = [
     name: "White Oxford Shirt",
     category: "Shirts",
     brand: "Arket",
-    season: "all-season",
     imageUrl: "/samples/shirt.svg",
     slots: ["top", "outerTop"]
   },
@@ -133,7 +123,6 @@ export const starterItems: WardrobeItem[] = [
     name: "Blue Linen Shirt",
     category: "Shirts",
     brand: "Massimo Dutti",
-    season: "summer",
     imageUrl: "/samples/linen-shirt.svg",
     slots: ["top", "outerTop"]
   },
@@ -142,7 +131,6 @@ export const starterItems: WardrobeItem[] = [
     name: "Grey Logo Hoodie",
     category: "Sweatshirts",
     brand: "Nike",
-    season: "all-season",
     imageUrl: "/samples/hoodie.svg",
     slots: ["top", "outerTop"]
   },
@@ -151,7 +139,6 @@ export const starterItems: WardrobeItem[] = [
     name: "Boxy White T-Shirt",
     category: "T-Shirts",
     brand: "Everlane",
-    season: "summer",
     imageUrl: "/samples/tshirt.svg",
     slots: ["top"]
   },
@@ -160,7 +147,6 @@ export const starterItems: WardrobeItem[] = [
     name: "Striped Breton Tee",
     category: "T-Shirts",
     brand: "Saint James",
-    season: "summer",
     imageUrl: "/samples/stripe-tee.svg",
     slots: ["top"]
   },
@@ -169,7 +155,6 @@ export const starterItems: WardrobeItem[] = [
     name: "Merino Button Cardigan",
     category: "Knitwear",
     brand: "Toteme",
-    season: "winter",
     imageUrl: "/samples/cardigan.svg",
     slots: ["top", "outerTop"]
   },
@@ -178,7 +163,6 @@ export const starterItems: WardrobeItem[] = [
     name: "Straight Blue Jeans",
     category: "Jeans",
     brand: "Levi's",
-    season: "all-season",
     imageUrl: "/samples/jeans.svg",
     slots: ["bottom"]
   },
@@ -187,7 +171,6 @@ export const starterItems: WardrobeItem[] = [
     name: "Black City Boots",
     category: "Boots",
     brand: "Vagabond",
-    season: "winter",
     imageUrl: "/samples/boots.svg",
     slots: ["shoes"]
   },
@@ -196,13 +179,7 @@ export const starterItems: WardrobeItem[] = [
     name: "Small Leather Bag",
     category: "Bags",
     brand: "Mansur",
-    season: "all-season",
     imageUrl: "/samples/bag.svg",
     slots: ["bag"]
   }
 ];
-
-export function seasonLabel(season: Season) {
-  if (season === "all-season") return "All season";
-  return season[0].toUpperCase() + season.slice(1);
-}

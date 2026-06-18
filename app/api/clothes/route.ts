@@ -15,15 +15,28 @@ export async function POST(request: Request) {
   try {
     const payload = parseClothesPayload(await request.json());
     const supabase = createSupabaseServerClient();
-    const { data, error } = await supabase
+    const insert = itemToClothesInsert(payload);
+    let result = await supabase
       .from("clothes")
-      .insert(itemToClothesInsert(payload))
+      .insert(insert)
       .select("*")
       .single();
 
-    if (error) throw error;
+    // Keeps creates working until the existing Supabase table runs remove-season.sql.
+    if (result.error?.code === "23502" && result.error.message.includes("season")) {
+      result = await supabase
+        .from("clothes")
+        .insert({ ...insert, season: "all-season" })
+        .select("*")
+        .single();
+    }
 
-    return Response.json({ item: clothesRowToItem(data) }, { status: 201 });
+    if (result.error) throw result.error;
+
+    return Response.json(
+      { item: clothesRowToItem(result.data) },
+      { status: 201 }
+    );
   } catch (error) {
     return Response.json(
       { error: error instanceof Error ? error.message : "Failed to create item" },

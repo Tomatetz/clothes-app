@@ -1,7 +1,7 @@
 "use client";
 
 import { useWardrobe } from "@/context/WardrobeContext";
-import { ClothingSlot, seasonLabel, slotLabels } from "@/lib/wardrobe";
+import { ClothingSlot, slotLabels } from "@/lib/wardrobe";
 import Image from "next/image";
 import { Minus } from "lucide-react";
 import { SlotIcon } from "@/components/SlotIcon";
@@ -82,14 +82,9 @@ export function ClosetView({ slot, onOpen, compact = false }: ClosetViewProps) {
                 {selected.name}
               </div>
               {!compact && (
-                <>
-                  <div className="mt-1 truncate text-sm text-stone-600">
-                    {selected.brand} · {selected.category}
-                  </div>
-                  <div className="mt-2 inline-flex w-fit rounded-full bg-emerald-100/80 px-2.5 py-1 text-xs font-medium text-emerald-950">
-                    {seasonLabel(selected.season)}
-                  </div>
-                </>
+                <div className="mt-1 truncate text-sm text-stone-600">
+                  {selected.brand} · {selected.category}
+                </div>
               )}
             </div>
           </button>

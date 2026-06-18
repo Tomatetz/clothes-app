@@ -5,7 +5,6 @@ create table if not exists public.clothes (
   name text not null,
   category text not null,
   brand text not null,
-  season text not null check (season in ('summer', 'winter', 'all-season')),
   image_url text not null,
   slots text[] not null check (
     slots <@ array['top', 'outerTop', 'bottom', 'shoes', 'bag']::text[]
