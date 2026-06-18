@@ -3,7 +3,7 @@
 import { useWardrobe } from "@/context/WardrobeContext";
 import { ClothingSlot, seasonLabel, slotLabels } from "@/lib/wardrobe";
 import Image from "next/image";
-import { Minus } from "lucide-react";
+import { Check, Minus } from "lucide-react";
 import { SlotIcon } from "@/components/SlotIcon";
 
 type ClosetViewProps = {
@@ -18,10 +18,8 @@ export function ClosetView({ slot, onOpen, compact = false }: ClosetViewProps) {
   const count = getItemsForSlot(slot).length;
 
   return (
-    <div
-      className="group relative min-h-[180px] overflow-hidden rounded-lg border border-stone-300 bg-white text-left shadow-soft transition hover:-translate-y-0.5 hover:border-emerald-700"
-    >
-      <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.74),rgba(238,241,237,0.52))]" />
+    <div className="group relative min-h-[180px] overflow-hidden rounded-md bg-white/78 text-left shadow-[0_10px_32px_rgba(28,25,23,0.08)] ring-1 ring-stone-950/5 backdrop-blur transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_38px_rgba(28,25,23,0.12)] hover:ring-emerald-800/30">
+      <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.52),rgba(232,238,233,0.3))]" />
       <div className="relative flex h-full min-h-inherit flex-col p-4 sm:p-5">
         <div className="mb-3 flex items-center justify-between gap-3">
           <button
@@ -33,14 +31,14 @@ export function ClosetView({ slot, onOpen, compact = false }: ClosetViewProps) {
               <SlotIcon slot={slot} />
             </span>
             <div>
-              <div className="text-lg font-semibold text-stone-950">
+              <div className="text-base font-semibold text-stone-950">
                 {slotLabels[slot]}
               </div>
               <div className="text-xs text-stone-500">{count} items</div>
             </div>
           </button>
           <button
-            className="flex size-9 items-center justify-center rounded-md border border-stone-300 bg-white text-stone-700 transition hover:border-red-700 hover:text-red-700 disabled:cursor-not-allowed disabled:opacity-35"
+            className="flex size-9 items-center justify-center rounded-md bg-white/70 text-stone-600 shadow-sm ring-1 ring-stone-950/10 transition hover:bg-red-50 hover:text-red-700 hover:ring-red-700/30 disabled:cursor-not-allowed disabled:opacity-35"
             disabled={!selected}
             onClick={() => clearSelection(slot)}
             type="button"
@@ -53,23 +51,27 @@ export function ClosetView({ slot, onOpen, compact = false }: ClosetViewProps) {
         {selected ? (
           <button
             className={`grid flex-1 gap-4 ${
-              compact ? "grid-rows-[minmax(150px,1fr)_auto]" : "sm:grid-cols-[minmax(0,260px)_1fr]"
+              compact ? "grid-rows-[minmax(170px,1fr)_auto]" : "sm:grid-cols-[minmax(280px,330px)_1fr]"
             }`}
             onClick={onOpen}
             type="button"
           >
-            <div className="relative min-h-[170px] overflow-hidden rounded-md bg-stone-100">
+            <div className="relative min-h-[190px] overflow-hidden rounded-md bg-stone-100">
               <Image
                 src={selected.imageUrl}
                 alt={selected.name}
                 fill
                 className="object-cover"
                 unoptimized
-                sizes="(max-width: 1024px) 100vw, 280px"
+                priority={slot === "top"}
+                sizes="(max-width: 1024px) 100vw, 330px"
               />
+              <span className="absolute right-3 top-3 flex size-8 items-center justify-center rounded-full bg-emerald-800 text-white shadow-md ring-2 ring-white/80">
+                <Check size={16} strokeWidth={2.5} />
+              </span>
             </div>
             <div className="flex min-w-0 flex-col justify-end">
-              <div className={`${compact ? "text-lg" : "text-2xl"} truncate font-semibold text-stone-950`}>
+              <div className={`${compact ? "text-lg" : "text-xl sm:text-2xl"} truncate font-semibold text-stone-950`}>
                 {selected.name}
               </div>
               {!compact && (
@@ -77,7 +79,7 @@ export function ClosetView({ slot, onOpen, compact = false }: ClosetViewProps) {
                   <div className="mt-1 text-sm text-stone-600">
                     {selected.brand} · {selected.category}
                   </div>
-                  <div className="mt-3 inline-flex w-fit rounded-md bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-900">
+                  <div className="mt-3 inline-flex w-fit rounded-full bg-emerald-100/80 px-2.5 py-1 text-xs font-medium text-emerald-950">
                     {seasonLabel(selected.season)}
                   </div>
                 </>
@@ -86,7 +88,7 @@ export function ClosetView({ slot, onOpen, compact = false }: ClosetViewProps) {
           </button>
         ) : (
           <button
-            className="flex flex-1 items-center justify-center rounded-md border border-dashed border-stone-300 bg-stone-50/80 px-4 text-center text-sm text-stone-500 transition hover:border-emerald-700 hover:bg-emerald-50"
+            className="flex flex-1 items-center justify-center rounded-md border border-dashed border-stone-300/80 bg-stone-100/55 px-4 text-center text-sm font-medium text-stone-500 transition hover:border-emerald-700/60 hover:bg-emerald-50 hover:text-emerald-900"
             onClick={onOpen}
             type="button"
           >

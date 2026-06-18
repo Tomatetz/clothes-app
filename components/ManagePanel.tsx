@@ -12,6 +12,7 @@ import {
 import Image from "next/image";
 import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
 import { ImagePlus, Search, Trash2, X } from "lucide-react";
+import { SlotIcon } from "@/components/SlotIcon";
 
 const fallbackImage = "/samples/item.svg";
 const seasons: Season[] = ["all-season", "summer", "winter"];
@@ -172,22 +173,24 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
       />
       <section
         className={`absolute left-1/2 top-1/2 flex max-h-[92vh] w-[min(1120px,calc(100vw-24px))] -translate-x-1/2 overflow-hidden rounded-md border border-white/90 bg-white/30 shadow-[0_18px_48px_rgba(0,0,0,0.56),0_4px_14px_rgba(0,0,0,0.28),0_0_0_1px_rgba(255,255,255,0.35)] backdrop-blur-xl transition duration-300 ${
-          open ? "-translate-y-1/2 opacity-100" : "translate-y-4 opacity-0"
+          open
+            ? "-translate-y-1/2 scale-100 opacity-100"
+            : "translate-y-4 scale-[0.985] opacity-0"
         }`}
       >
-        <div className="grid max-h-[92vh] w-full grid-cols-1 overflow-y-auto lg:grid-cols-[420px_1fr]">
-          <form className="border-b border-white/45 bg-white/15 p-5 lg:border-b-0 lg:border-r" onSubmit={handleSubmit}>
-            <div className="mb-5 flex items-start justify-between gap-4">
+        <div className="grid h-[92vh] max-h-[92vh] w-full grid-cols-1 overflow-y-auto lg:grid-cols-[420px_1fr] lg:overflow-hidden">
+          <form className="border-b border-white/45 bg-white/15 p-5 lg:h-full lg:overflow-y-auto lg:border-b-0 lg:border-r" onSubmit={handleSubmit}>
+            <div className="-mx-5 mb-5 flex items-start justify-between gap-4 border-b border-white/40 bg-white/45 px-5 pb-4 pt-5 backdrop-blur-xl lg:sticky lg:-top-5 lg:z-20">
               <div>
-                <p className="text-xs uppercase tracking-[0.22em] text-stone-500">
+                <p className="text-xs font-medium uppercase text-stone-500">
                   Wardrobe
                 </p>
-                <h2 className="text-2xl font-semibold text-stone-950">
+                <h2 className="mt-0.5 text-2xl font-semibold text-stone-950">
                   {editingItemId ? "Edit clothes" : "Add clothes"}
                 </h2>
               </div>
               <button
-                className="flex size-10 items-center justify-center rounded-md border border-white/70 bg-white/45 text-stone-700 shadow-sm backdrop-blur-md transition hover:border-stone-400 hover:bg-white/70"
+                className="flex size-10 items-center justify-center rounded-md bg-white/55 text-stone-700 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md transition hover:bg-white/80 hover:ring-stone-950/20"
                 onClick={onClose}
                 type="button"
                 title="Close"
@@ -201,7 +204,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
                 Admin password
               </span>
               <input
-                className="h-11 w-full rounded-md border border-white/70 bg-white/45 px-3 text-stone-950 shadow-inner backdrop-blur-md placeholder:text-stone-500"
+                className="h-11 w-full rounded-md border-0 bg-white/60 px-3 text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md placeholder:text-stone-500"
                 value={adminPassword}
                 onChange={(event) => setAdminPassword(event.target.value)}
                 placeholder="Required for saving"
@@ -214,7 +217,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
                 Name
               </span>
               <input
-                className="h-11 w-full rounded-md border border-white/70 bg-white/45 px-3 text-stone-950 shadow-inner backdrop-blur-md placeholder:text-stone-500"
+                className="h-11 w-full rounded-md border-0 bg-white/60 px-3 text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md placeholder:text-stone-500"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
                 placeholder="Black jacket"
@@ -227,7 +230,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
                   Category
                 </span>
                 <select
-                  className="h-11 w-full rounded-md border border-white/70 bg-white/45 px-3 text-stone-950 shadow-inner backdrop-blur-md"
+                  className="h-11 w-full rounded-md border-0 bg-white/60 px-3 text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md"
                   value={category}
                   onChange={(event) => {
                     const nextCategory = event.target.value;
@@ -246,7 +249,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
                   Season
                 </span>
                 <select
-                  className="h-11 w-full rounded-md border border-white/70 bg-white/45 px-3 text-stone-950 shadow-inner backdrop-blur-md"
+                  className="h-11 w-full rounded-md border-0 bg-white/60 px-3 text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md"
                   value={season}
                   onChange={(event) => setSeason(event.target.value as Season)}
                 >
@@ -264,7 +267,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
                 Brand
               </span>
               <input
-                className="h-11 w-full rounded-md border border-white/70 bg-white/45 px-3 text-stone-950 shadow-inner backdrop-blur-md placeholder:text-stone-500"
+                className="h-11 w-full rounded-md border-0 bg-white/60 px-3 text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md placeholder:text-stone-500"
                 value={brand}
                 onChange={(event) => setBrand(event.target.value)}
                 placeholder="Brand"
@@ -279,21 +282,22 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
                 {allSlots.map((slot) => (
                   <button
                     key={slot}
-                    className={`h-10 rounded-md border text-sm font-medium transition ${
+                    className={`flex h-10 items-center justify-center gap-1.5 rounded-md text-sm font-medium transition ${
                       slots.includes(slot)
-                        ? "border-emerald-800 bg-emerald-800 text-white"
-                        : "border-white/70 bg-white/40 text-stone-700 backdrop-blur-md hover:border-emerald-700 hover:bg-white/65"
+                        ? "bg-emerald-800 text-white shadow-sm ring-1 ring-emerald-950/20"
+                        : "bg-white/45 text-stone-700 ring-1 ring-stone-950/10 backdrop-blur-md hover:bg-emerald-50 hover:text-emerald-950 hover:ring-emerald-700/30"
                     }`}
                     onClick={() => toggleSlot(slot)}
                     type="button"
                   >
-                    {slotLabels[slot]}
+                    <SlotIcon slot={slot} size={15} />
+                    <span className="hidden sm:inline">{slotLabels[slot]}</span>
                   </button>
                 ))}
               </div>
             </div>
 
-            <label className="mb-5 block cursor-pointer rounded-lg border border-dashed border-white/70 bg-white/35 p-3 shadow-sm backdrop-blur-md transition hover:border-emerald-700 hover:bg-white/55">
+            <label className="mb-5 block cursor-pointer rounded-md border border-dashed border-stone-500/35 bg-white/35 p-3 shadow-sm backdrop-blur-md transition hover:border-emerald-700 hover:bg-white/55">
               <input
                 className="sr-only"
                 type="file"
@@ -347,71 +351,87 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
             )}
           </form>
 
-          <div className="bg-white/10 p-5">
-            <div className="mb-4 flex items-end justify-between gap-3">
-              <div>
-                <p className="text-xs uppercase tracking-[0.22em] text-stone-500">
-                  Saved locally
-                </p>
-                <h3 className="text-xl font-semibold text-stone-950">
-                  All clothes
-                </h3>
+          <div className="bg-white/10 p-5 lg:h-full lg:overflow-y-auto">
+            <div className="sticky -top-5 z-10 -mx-5 mb-4 border-b border-white/40 bg-white/45 px-5 pb-4 pt-5 backdrop-blur-xl">
+              <div className="mb-4 flex items-end justify-between gap-3">
+                <div>
+                  <p className="text-xs font-medium uppercase text-stone-500">
+                    Saved locally
+                  </p>
+                  <h3 className="mt-0.5 text-xl font-semibold text-stone-950">
+                    All clothes
+                  </h3>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="rounded-full bg-white/55 px-2.5 py-1 text-sm font-medium text-stone-600 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md">
+                    {filteredItems.length}/{items.length}
+                  </span>
+                  <button
+                    className="flex size-9 items-center justify-center rounded-md bg-white/55 text-stone-700 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md transition hover:bg-white/80 lg:hidden"
+                    onClick={onClose}
+                    type="button"
+                    title="Close"
+                  >
+                    <X size={17} />
+                  </button>
+                </div>
               </div>
-              <span className="rounded-md border border-white/60 bg-white/35 px-2.5 py-1 text-sm text-stone-600 backdrop-blur-md">
-                {filteredItems.length}/{items.length}
-              </span>
-            </div>
 
-            <div className="mb-4 grid gap-3 rounded-lg border border-white/60 bg-white/28 p-3 shadow-[0_12px_35px_rgba(28,25,23,0.08)] backdrop-blur-lg">
-              <label className="relative block">
-                <Search
-                  className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-stone-400"
-                  size={18}
-                />
-                <input
-                  className="h-11 w-full rounded-md border border-white/70 bg-white/45 pl-10 pr-3 text-sm text-stone-950 shadow-inner backdrop-blur-md placeholder:text-stone-500"
-                  value={listSearchQuery}
-                  onChange={(event) => setListSearchQuery(event.target.value)}
-                  placeholder="Search by name or brand"
-                />
-              </label>
-
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                <label className="block">
-                  <span className="mb-1.5 block text-xs font-medium uppercase tracking-[0.14em] text-stone-500">
-                    Category
-                  </span>
-                  <select
-                    className="h-10 w-full rounded-md border border-white/70 bg-white/45 px-3 text-sm text-stone-950 shadow-inner backdrop-blur-md"
-                    value={listCategoryFilter}
-                    onChange={(event) => setListCategoryFilter(event.target.value)}
-                  >
-                    <option value="all">All categories</option>
-                    {listCategoryOptions.map((itemCategory) => (
-                      <option key={itemCategory} value={itemCategory}>
-                        {itemCategory}
-                      </option>
-                    ))}
-                  </select>
+              <div className="grid gap-3">
+                <label className="relative block">
+                  <Search
+                    className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-stone-400"
+                    size={18}
+                  />
+                  <input
+                    className="h-11 w-full rounded-md border-0 bg-white/60 pl-10 pr-3 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md placeholder:text-stone-500"
+                    value={listSearchQuery}
+                    onChange={(event) => setListSearchQuery(event.target.value)}
+                    placeholder="Search by name or brand"
+                  />
                 </label>
 
-                <label className="block">
-                  <span className="mb-1.5 block text-xs font-medium uppercase tracking-[0.14em] text-stone-500">
-                    Brand
-                  </span>
-                  <select
-                    className="h-10 w-full rounded-md border border-white/70 bg-white/45 px-3 text-sm text-stone-950 shadow-inner backdrop-blur-md"
-                    value={listBrandFilter}
-                    onChange={(event) => setListBrandFilter(event.target.value)}
-                  >
-                    <option value="all">All brands</option>
-                    {listBrandOptions.map((itemBrand) => (
-                      <option key={itemBrand} value={itemBrand}>
-                        {itemBrand}
-                      </option>
-                    ))}
-                  </select>
-                </label>
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  <label className="block">
+                    <span className="mb-1.5 block text-xs font-medium uppercase text-stone-500">
+                      Category
+                    </span>
+                    <select
+                      className="h-10 w-full rounded-md border-0 bg-white/60 px-3 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md"
+                      value={listCategoryFilter}
+                      onChange={(event) =>
+                        setListCategoryFilter(event.target.value)
+                      }
+                    >
+                      <option value="all">All categories</option>
+                      {listCategoryOptions.map((itemCategory) => (
+                        <option key={itemCategory} value={itemCategory}>
+                          {itemCategory}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+
+                  <label className="block">
+                    <span className="mb-1.5 block text-xs font-medium uppercase text-stone-500">
+                      Brand
+                    </span>
+                    <select
+                      className="h-10 w-full rounded-md border-0 bg-white/60 px-3 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md"
+                      value={listBrandFilter}
+                      onChange={(event) =>
+                        setListBrandFilter(event.target.value)
+                      }
+                    >
+                      <option value="all">All brands</option>
+                      {listBrandOptions.map((itemBrand) => (
+                        <option key={itemBrand} value={itemBrand}>
+                          {itemBrand}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
               </div>
             </div>
 
@@ -419,10 +439,10 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
               {filteredItems.map((item) => (
                 <article
                   key={item.id}
-                  className={`grid cursor-pointer grid-cols-[88px_1fr_auto] gap-3 rounded-lg border bg-white/38 p-2 text-left shadow-[0_8px_24px_rgba(28,25,23,0.06)] backdrop-blur-lg transition hover:-translate-y-0.5 hover:border-emerald-700 hover:bg-white/60 hover:shadow-[0_14px_32px_rgba(28,25,23,0.1)] ${
+                  className={`grid cursor-pointer grid-cols-[96px_1fr_auto] gap-3 rounded-md bg-white/42 p-2.5 text-left shadow-[0_8px_24px_rgba(28,25,23,0.06)] ring-1 backdrop-blur-lg transition duration-200 hover:-translate-y-0.5 hover:bg-white/65 hover:ring-emerald-700/45 hover:shadow-[0_14px_32px_rgba(28,25,23,0.1)] ${
                     editingItemId === item.id
-                      ? "border-emerald-800 bg-emerald-50/45"
-                      : "border-white/60"
+                      ? "bg-emerald-50/55 ring-2 ring-emerald-700"
+                      : "ring-white/60"
                   }`}
                   onClick={() => startEditing(item.id)}
                   onKeyDown={(event) => {
@@ -434,14 +454,14 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
                   role="button"
                   tabIndex={0}
                 >
-                  <div className="relative h-24 overflow-hidden rounded-md bg-stone-100">
+                  <div className="relative h-28 overflow-hidden rounded-md bg-stone-100">
                     <Image
                       src={item.imageUrl}
                       alt={item.name}
                       fill
                       className="object-cover"
                       unoptimized
-                      sizes="88px"
+                      sizes="96px"
                     />
                   </div>
                   <div className="min-w-0 py-1">
@@ -455,7 +475,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
                       {item.slots.map((slot) => (
                         <span
                           key={slot}
-                          className="rounded-md border border-white/60 bg-white/35 px-2 py-1"
+                          className="rounded-full bg-stone-100/80 px-2.5 py-1"
                         >
                           {slotLabels[slot]}
                         </span>
@@ -463,7 +483,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
                     </div>
                   </div>
                   <button
-                    className="flex size-9 items-center justify-center rounded-md border border-white/70 bg-white/30 text-stone-500 backdrop-blur-md transition hover:border-red-700 hover:bg-white/60 hover:text-red-700"
+                    className="flex size-9 items-center justify-center rounded-md bg-white/40 text-stone-500 ring-1 ring-stone-950/10 backdrop-blur-md transition hover:bg-red-50 hover:text-red-700 hover:ring-red-700/30"
                     onClick={(event) => {
                       event.stopPropagation();
                       window.sessionStorage.setItem(

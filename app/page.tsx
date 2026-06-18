@@ -15,19 +15,19 @@ export default function Home() {
   const [isManaging, setIsManaging] = useState(false);
 
   return (
-    <main className="h-screen overflow-y-auto px-4 py-5 sm:px-8 lg:px-10">
-      <div className="mx-auto flex max-w-7xl flex-col gap-5 pb-8">
-        <header className="flex flex-wrap items-center justify-between gap-3 border-b border-stone-300/70 pb-4">
+    <main className="h-screen overflow-y-auto px-4 py-5 sm:px-8 sm:py-7 lg:px-10">
+      <div className="mx-auto flex max-w-7xl flex-col gap-6 pb-8">
+        <header className="flex flex-wrap items-center justify-between gap-4 pb-1">
           <div>
-            <p className="text-xs uppercase tracking-[0.22em] text-stone-500">
+            <p className="text-xs font-medium uppercase text-stone-500">
               Local wardrobe
             </p>
-            <h1 className="text-3xl font-semibold text-stone-950 sm:text-4xl">
+            <h1 className="mt-1 text-3xl font-semibold text-stone-950 sm:text-4xl">
               Outfit Builder
             </h1>
           </div>
           <button
-            className="inline-flex h-11 items-center gap-2 rounded-md bg-stone-950 px-4 text-sm font-medium text-white shadow-soft transition hover:bg-emerald-950"
+            className="inline-flex h-11 items-center gap-2 rounded-md bg-stone-950 px-4 text-sm font-medium text-white shadow-[0_8px_20px_rgba(28,25,23,0.18)] transition duration-200 hover:-translate-y-0.5 hover:bg-emerald-950"
             onClick={() => setIsManaging(true)}
             type="button"
           >
@@ -37,7 +37,7 @@ export default function Home() {
         </header>
 
         <section className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1fr)_312px]">
-          <div className="grid gap-4">
+          <div className="grid gap-3">
             {outfitSlots.map((slot) => (
               <ClosetView
                 key={slot}
@@ -47,13 +47,13 @@ export default function Home() {
             ))}
           </div>
 
-          <aside className="grid content-start gap-4">
+          <aside className="grid content-start gap-3">
             <ClosetView
               compact
               slot="bag"
               onOpen={() => setActiveSlot("bag")}
             />
-            <div className="rounded-lg border border-stone-300 bg-white/80 p-3 shadow-soft backdrop-blur">
+            <div className="rounded-md bg-white/70 p-3 shadow-[0_10px_30px_rgba(28,25,23,0.08)] ring-1 ring-stone-950/5 backdrop-blur">
               <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-stone-900">
                 <BriefcaseBusiness size={17} />
                 Quick pick
@@ -62,7 +62,7 @@ export default function Home() {
                 {[...outfitSlots, "bag" as ClothingSlot].map((slot) => (
                   <button
                     key={slot}
-                    className="flex h-12 items-center justify-center gap-2 rounded-md border border-stone-300 bg-stone-50 text-sm font-medium text-stone-800 transition hover:border-emerald-700 hover:bg-emerald-50"
+                    className="flex h-12 items-center justify-center gap-2 rounded-md bg-stone-100/80 text-sm font-medium text-stone-800 transition duration-200 hover:bg-emerald-100/80 hover:text-emerald-950"
                     onClick={() => setActiveSlot(slot)}
                     type="button"
                     title={`Open ${slotLabels[slot]}`}

@@ -122,15 +122,15 @@ export function ItemDrawer({ activeSlot, onClose }: ItemDrawerProps) {
       >
         <div className="sticky top-0 z-20 -mx-5 mb-5 flex items-center justify-between gap-4 border-b border-white/50 bg-white/20 px-5 py-4 backdrop-blur-md sm:-mx-6 sm:px-6">
           <div>
-            <p className="text-xs uppercase tracking-[0.22em] text-stone-500">
+            <p className="text-xs font-medium uppercase text-stone-500">
               Pick item
             </p>
-            <h2 className="text-2xl font-semibold text-stone-950">
+            <h2 className="mt-0.5 text-2xl font-semibold text-stone-950">
               {activeSlot ? slotLabels[activeSlot] : "Items"}
             </h2>
           </div>
           <button
-            className="flex size-10 items-center justify-center rounded-md border border-white/80 bg-white/[0.55] text-stone-700 shadow-sm backdrop-blur-xl transition hover:border-stone-400 hover:bg-white/80"
+            className="flex size-10 items-center justify-center rounded-md bg-white/60 text-stone-700 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-xl transition hover:bg-white/85 hover:ring-stone-950/20"
             onClick={onClose}
             type="button"
             title="Close"
@@ -146,7 +146,7 @@ export function ItemDrawer({ activeSlot, onClose }: ItemDrawerProps) {
               size={18}
             />
             <input
-              className="h-11 w-full rounded-md border border-white/80 bg-white/[0.55] pl-10 pr-3 text-sm text-stone-950 shadow-inner backdrop-blur-md placeholder:text-stone-500"
+              className="h-11 w-full rounded-md border-0 bg-white/65 pl-10 pr-3 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md placeholder:text-stone-500"
               value={searchQuery}
               onChange={(event) => setSearchQuery(event.target.value)}
               placeholder="Search by name or brand"
@@ -155,11 +155,11 @@ export function ItemDrawer({ activeSlot, onClose }: ItemDrawerProps) {
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <label className="block">
-              <span className="mb-1.5 block text-xs font-medium uppercase tracking-[0.14em] text-stone-500">
+              <span className="mb-1.5 block text-xs font-medium uppercase text-stone-500">
                 Category
               </span>
               <select
-                className="h-10 w-full rounded-md border border-white/80 bg-white/[0.55] px-3 text-sm text-stone-950 shadow-inner backdrop-blur-md"
+                className="h-10 w-full rounded-md border-0 bg-white/65 px-3 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md"
                 value={categoryFilter}
                 onChange={(event) => setCategoryFilter(event.target.value)}
               >
@@ -173,11 +173,11 @@ export function ItemDrawer({ activeSlot, onClose }: ItemDrawerProps) {
             </label>
 
             <label className="block">
-              <span className="mb-1.5 block text-xs font-medium uppercase tracking-[0.14em] text-stone-500">
+              <span className="mb-1.5 block text-xs font-medium uppercase text-stone-500">
                 Brand
               </span>
               <select
-                className="h-10 w-full rounded-md border border-white/80 bg-white/[0.55] px-3 text-sm text-stone-950 shadow-inner backdrop-blur-md"
+                className="h-10 w-full rounded-md border-0 bg-white/65 px-3 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md"
                 value={brandFilter}
                 onChange={(event) => setBrandFilter(event.target.value)}
               >
@@ -202,12 +202,12 @@ export function ItemDrawer({ activeSlot, onClose }: ItemDrawerProps) {
             return (
               <button
                 key={item.id}
-                className={`grid grid-cols-[94px_1fr_auto] items-center gap-3 rounded-lg border bg-white/[0.48] p-2 text-left shadow-[0_8px_24px_rgba(28,25,23,0.06)] backdrop-blur-xl transition hover:-translate-y-0.5 hover:border-emerald-700/70 hover:bg-white/[0.72] hover:shadow-[0_14px_32px_rgba(28,25,23,0.1)] ${
+                className={`grid grid-cols-[86px_1fr_auto] items-center gap-3 rounded-md bg-white/50 p-2 text-left shadow-[0_8px_24px_rgba(28,25,23,0.06)] ring-1 backdrop-blur-xl transition duration-200 sm:grid-cols-[112px_1fr_auto] sm:p-2.5 ${
                   isSelected
-                    ? "border-emerald-800/80 bg-emerald-50/[0.55]"
+                    ? "bg-emerald-50/65 ring-2 ring-emerald-700"
                     : isSelectedElsewhere
-                      ? "border-white/60 opacity-55 grayscale"
-                      : "border-white/70"
+                      ? "opacity-55 grayscale ring-white/50 hover:opacity-75"
+                      : "ring-white/60 hover:-translate-y-0.5 hover:bg-white/75 hover:ring-emerald-700/50 hover:shadow-[0_14px_32px_rgba(28,25,23,0.1)]"
                 }`}
                 onClick={() => {
                   if (!activeSlot) return;
@@ -216,14 +216,14 @@ export function ItemDrawer({ activeSlot, onClose }: ItemDrawerProps) {
                 }}
                 type="button"
               >
-                <div className="relative h-24 overflow-hidden rounded-md bg-stone-100">
+                <div className="relative h-24 overflow-hidden rounded-md bg-stone-100 sm:h-28">
                   <Image
                     src={item.imageUrl}
                     alt={item.name}
                     fill
                     className="object-cover"
                     unoptimized
-                    sizes="94px"
+                    sizes="(max-width: 640px) 86px, 112px"
                   />
                 </div>
                 <div className="min-w-0">
@@ -234,24 +234,24 @@ export function ItemDrawer({ activeSlot, onClose }: ItemDrawerProps) {
                     <HighlightedText query={searchQuery} text={item.brand} />
                   </div>
                   <div className="mt-2 flex flex-wrap gap-2 text-xs text-stone-600">
-                    <span className="rounded-md border border-white/60 bg-white/[0.45] px-2 py-1">
+                    <span className="rounded-full bg-stone-100/85 px-2.5 py-1">
                       {item.category}
                     </span>
-                    <span className="rounded-md border border-white/60 bg-white/[0.45] px-2 py-1">
+                    <span className="rounded-full bg-stone-100/85 px-2.5 py-1">
                       {seasonLabel(item.season)}
                     </span>
                     {selectedElsewhere && (
-                      <span className="rounded-md border border-white/60 bg-stone-200/[0.55] px-2 py-1 text-stone-700">
+                      <span className="rounded-full bg-stone-200/80 px-2.5 py-1 text-stone-700">
                         Selected in {slotLabels[selectedElsewhere]}
                       </span>
                     )}
                   </div>
                 </div>
                 <span
-                  className={`flex size-9 items-center justify-center rounded-md ${
+                  className={`flex size-9 items-center justify-center rounded-full transition ${
                     isSelected
-                      ? "bg-emerald-800 text-white"
-                      : "border border-stone-300 text-stone-400"
+                      ? "bg-emerald-800 text-white shadow-md ring-2 ring-white/70"
+                      : "bg-white/45 text-stone-400 ring-1 ring-stone-950/10"
                   }`}
                 >
                   <Check size={17} />
