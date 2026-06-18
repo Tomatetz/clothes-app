@@ -116,11 +116,11 @@ export function ItemDrawer({ activeSlot, onClose }: ItemDrawerProps) {
         onClick={onClose}
       />
       <aside
-        className={`absolute right-0 top-0 h-full w-full max-w-xl overflow-y-auto border-l border-white/60 bg-stone-50/[0.72] p-5 shadow-[-24px_0_70px_rgba(28,25,23,0.18)] backdrop-blur-2xl transition-transform duration-300 sm:p-6 ${
+        className={`absolute right-0 top-0 h-full w-full max-w-xl overflow-y-auto border-l border-white/60 bg-stone-50/[0.72] px-5 pb-5 shadow-[-24px_0_70px_rgba(28,25,23,0.18)] backdrop-blur-2xl transition-transform duration-300 sm:px-6 sm:pb-6 ${
           activeSlot ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <div className="sticky -top-5 z-20 -mx-5 mb-5 flex items-center justify-between gap-4 border-b border-white/60 bg-stone-50/70 px-5 pb-4 pt-5 backdrop-blur-2xl sm:-top-6 sm:-mx-6 sm:px-6 sm:pt-6">
+        <div className="sticky top-0 z-20 -mx-5 mb-5 flex items-center justify-between gap-4 border-b border-white/60 bg-stone-50/70 px-5 py-4 backdrop-blur-2xl sm:-mx-6 sm:px-6">
           <div>
             <p className="text-xs uppercase tracking-[0.22em] text-stone-500">
               Pick item
