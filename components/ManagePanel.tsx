@@ -1,6 +1,7 @@
 "use client";
 
-import { SlotIcon } from "@/components/SlotIcon";
+import { CustomSelect } from "@/components/CustomSelect";
+import { HighlightedText } from "@/components/HighlightedText";
 import { useWardrobe } from "@/context/WardrobeContext";
 import {
 	categories,
@@ -21,6 +22,13 @@ import {
 
 const fallbackImage = "/samples/item.svg";
 const allSlots: ClothingSlot[] = ["top", "outerTop", "bottom", "shoes", "bag"];
+const slotNumbers: Record<ClothingSlot, string> = {
+	top: "01",
+	outerTop: "02",
+	bottom: "03",
+	shoes: "04",
+	bag: "05",
+};
 
 type ManagePanelProps = {
 	open: boolean;
@@ -210,13 +218,13 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
 			aria-hidden={!open}
 		>
 			<div
-				className={`absolute inset-0 bg-stone-950/55 backdrop-blur-[4px] transition-opacity duration-300 ${
+				className={`absolute inset-0 bg-stone-950/35 transition-opacity duration-300 ${
 					open ? "opacity-100" : "opacity-0"
 				}`}
 				onClick={onClose}
 			/>
 			<section
-				className={`absolute left-1/2 top-1/2 flex max-h-[92vh] w-[min(1120px,calc(100vw-24px))] -translate-x-1/2 overflow-hidden rounded-md border border-white/90 bg-white/30 shadow-[0_18px_48px_rgba(0,0,0,0.56),0_4px_14px_rgba(0,0,0,0.28),0_0_0_1px_rgba(255,255,255,0.35)] backdrop-blur-xl transition duration-300 ${
+				className={`absolute left-1/2 top-1/2 flex max-h-[94vh] w-[min(1380px,calc(100vw-24px))] -translate-x-1/2 overflow-hidden border border-stone-950/30 bg-[#f3f1eb] transition duration-300 ${
 					open
 						? "-translate-y-1/2 scale-100 opacity-100"
 						: "translate-y-4 scale-[0.985] opacity-0"
@@ -224,24 +232,29 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
 			>
 				<div
 					ref={panelScrollRef}
-					className="grid h-[92vh] max-h-[92vh] w-full grid-cols-1 overflow-y-auto lg:grid-cols-[420px_1fr] lg:overflow-hidden"
+					className="grid h-[94vh] max-h-[94vh] w-full grid-cols-1 overflow-y-auto lg:grid-cols-[400px_1fr] lg:overflow-hidden"
 				>
 					<form
 						ref={formRef}
-						className="border-b border-white/45 bg-white/15 px-5 pb-5 lg:h-full lg:overflow-y-auto lg:border-b-0 lg:border-r overscroll-y-none"
+						className="border-b border-stone-950/30 bg-[#ebe8e0] px-5 pb-6 lg:h-full lg:overflow-y-auto lg:border-b-0 lg:border-r overscroll-y-none"
 						onSubmit={handleSubmit}
 					>
-						<div className="-mx-5 mb-5 flex min-h-16 items-center justify-between gap-4 border-b border-white/40 bg-white/45 px-5 py-3 backdrop-blur-xl lg:sticky lg:top-0 lg:z-20">
-							<h2 className="text-xl font-semibold text-stone-950">
-								{editingItemId ? "Edit clothes" : "Add clothes"}
-							</h2>
+						<div className="-mx-5 mb-5 flex items-end justify-between gap-4 border-b border-stone-950/30 bg-[#ebe8e0] px-5 py-5 lg:sticky lg:top-0 lg:z-20">
+							<div>
+								<div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-500">
+									Wardrobe editor / {String(items.length).padStart(2, "0")}
+								</div>
+								<h2 className="fashion-display mt-2 text-5xl leading-[0.82] tracking-[-0.045em] text-stone-950">
+									{editingItemId ? "Edit piece" : "New piece"}
+								</h2>
+							</div>
 							<button
-								className="flex size-10 items-center justify-center rounded-md bg-white/55 text-stone-700 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md transition hover:bg-white/80 hover:ring-stone-950/20"
+								className="flex size-9 shrink-0 items-center justify-center border border-stone-950/30 text-stone-700 transition hover:bg-stone-950 hover:text-[#f3f1eb]"
 								onClick={onClose}
 								type="button"
 								title="Close"
 							>
-								<X size={18} />
+								<X size={17} strokeWidth={1.5} />
 							</button>
 						</div>
 
@@ -250,7 +263,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
 								Admin password
 							</span>
 							<input
-								className="h-12 w-full rounded-md border-0 bg-white/60 px-3 pb-1 pt-4 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md placeholder:text-stone-500"
+								className="h-12 w-full border border-stone-950/25 bg-transparent px-3 pb-1 pt-4 text-sm text-stone-950 placeholder:text-stone-500"
 								value={adminPassword}
 								onChange={(event) => setAdminPassword(event.target.value)}
 								placeholder="Required for saving"
@@ -263,7 +276,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
 								Name
 							</span>
 							<input
-								className="h-12 w-full rounded-md border-0 bg-white/60 px-3 pb-1 pt-4 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md placeholder:text-stone-500"
+								className="h-12 w-full border border-stone-950/25 bg-transparent px-3 pb-1 pt-4 text-sm text-stone-950 placeholder:text-stone-500"
 								value={name}
 								onChange={(event) => setName(event.target.value)}
 								placeholder="Black jacket"
@@ -274,19 +287,19 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
 							<span className="pointer-events-none absolute left-3 top-1.5 z-10 text-[10px] font-semibold uppercase text-stone-500">
 								Category
 							</span>
-							<select
-								className="h-12 w-full rounded-md border-0 bg-white/60 px-3 pb-1 pt-4 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md"
+							<CustomSelect
+								ariaLabel="Category"
+								variant="field"
 								value={category}
-								onChange={(event) => {
-									const nextCategory = event.target.value;
+								onChange={(nextCategory) => {
 									setCategory(nextCategory);
 									setSlots(defaultSlotByCategory[nextCategory] ?? ["top"]);
 								}}
-							>
-								{categories.map((itemCategory) => (
-									<option key={itemCategory}>{itemCategory}</option>
-								))}
-							</select>
+								options={categories.map((itemCategory) => ({
+									label: itemCategory,
+									value: itemCategory,
+								}))}
+							/>
 						</label>
 
 						<label className="relative mb-3 block">
@@ -294,7 +307,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
 								Brand
 							</span>
 							<input
-								className="h-12 w-full rounded-md border-0 bg-white/60 px-3 pb-1 pt-4 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md placeholder:text-stone-500"
+								className="h-12 w-full border border-stone-950/25 bg-transparent px-3 pb-1 pt-4 text-sm text-stone-950 placeholder:text-stone-500"
 								value={brand}
 								onChange={(event) => setBrand(event.target.value)}
 								placeholder="Brand"
@@ -302,29 +315,29 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
 						</label>
 
 						<div className="mb-4">
-							<span className="mb-2 block text-sm font-medium text-stone-700">
-								Slot
+							<span className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.16em] text-stone-500">
+								Placement
 							</span>
-							<div className="grid grid-cols-5 gap-2">
+							<div className="grid grid-cols-5 border-l border-t border-stone-950/25">
 								{allSlots.map((slot) => (
 									<button
 										key={slot}
-										className={`flex h-10 items-center justify-center gap-1.5 rounded-md text-sm font-medium transition ${
+										className={`flex h-12 flex-col items-center justify-center border-b border-r border-stone-950/25 text-[9px] font-semibold uppercase tracking-[0.1em] transition ${
 											slots.includes(slot)
-												? "bg-emerald-800 text-white shadow-sm ring-1 ring-emerald-950/20"
-												: "bg-white/45 text-stone-700 ring-1 ring-stone-950/10 backdrop-blur-md hover:bg-emerald-50 hover:text-emerald-950 hover:ring-emerald-700/30"
+												? "bg-stone-950 text-[#f3f1eb]"
+												: "text-stone-600 hover:bg-[#ded9cd] hover:text-stone-950"
 										}`}
 										onClick={() => toggleSlot(slot)}
 										type="button"
 									>
-										<SlotIcon slot={slot} size={15} />
-										<span className="hidden sm:inline">{slotLabels[slot]}</span>
+										<span>{slotNumbers[slot]}</span>
+										<span className="mt-0.5 hidden sm:inline">{slotLabels[slot]}</span>
 									</button>
 								))}
 							</div>
 						</div>
 
-						<label className="mb-5 block cursor-pointer rounded-md border border-dashed border-stone-500/35 bg-white/35 p-3 shadow-sm backdrop-blur-md transition hover:border-emerald-700 hover:bg-white/55">
+						<label className="mb-5 block cursor-pointer border border-stone-950/25 p-3 transition hover:bg-[#ded9cd]">
 							<input
 								className="sr-only"
 								type="file"
@@ -332,7 +345,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
 								onChange={handlePhoto}
 							/>
 							<div className="grid grid-cols-[92px_1fr] items-center gap-3">
-								<div className="relative h-24 overflow-hidden rounded-md bg-stone-100">
+								<div className="relative h-24 overflow-hidden bg-[#e2ded4]">
 									<Image
 										src={imageUrl}
 										alt="Preview"
@@ -342,15 +355,18 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
 										sizes="92px"
 									/>
 								</div>
-								<div className="flex items-center gap-2 text-sm font-medium text-stone-700">
-									<ImagePlus size={18} />
-									Upload photo
+								<div className="text-stone-700">
+									<div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.15em]">
+										<ImagePlus size={16} strokeWidth={1.5} />
+										Upload image
+									</div>
+									<div className="mt-2 text-xs text-stone-500">JPG, PNG or WebP</div>
 								</div>
 							</div>
 						</label>
 
 						<button
-							className="h-11 w-full rounded-md bg-stone-950 px-4 text-sm font-semibold text-white transition hover:bg-emerald-950 disabled:cursor-not-allowed disabled:opacity-60"
+							className="h-11 w-full bg-stone-950 px-4 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#f3f1eb] transition hover:bg-stone-700 disabled:cursor-not-allowed disabled:opacity-60"
 							disabled={isSaving}
 							type="submit"
 						>
@@ -362,14 +378,14 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
 						</button>
 
 						{error && (
-							<div className="mt-3 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+							<div className="mt-3 border border-red-700/30 bg-red-50 px-3 py-2 text-xs text-red-800">
 								{error}
 							</div>
 						)}
 
 						{editingItemId && (
 							<button
-								className="mt-3 h-10 w-full rounded-md border border-white/70 bg-white/40 px-4 text-sm font-semibold text-stone-700 backdrop-blur-md transition hover:border-stone-950 hover:bg-white/65"
+								className="mt-3 h-10 w-full border border-stone-950/30 px-4 text-[10px] font-semibold uppercase tracking-[0.15em] text-stone-700 transition hover:bg-stone-950 hover:text-[#f3f1eb]"
 								onClick={resetForm}
 								type="button"
 							>
@@ -378,62 +394,61 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
 						)}
 					</form>
 
-					<div className="bg-white/10 px-5 pb-5 lg:h-full lg:overflow-y-auto overscroll-y-none">
-						<div className="sticky top-0 z-10 -mx-5 mb-4 min-h-16 border-b border-white/40 bg-white/45 px-5 py-3 backdrop-blur-xl">
-							<div className="grid grid-cols-[1fr_auto] gap-2 lg:grid-cols-[minmax(180px,1fr)_150px_150px_auto]">
+					<div className="bg-[#f3f1eb] px-5 pb-5 lg:h-full lg:overflow-y-auto overscroll-y-none">
+						<div className="sticky top-0 z-10 -mx-5 mb-0 border-b border-stone-950/30 bg-[#f3f1eb] px-5">
+							<div className="grid grid-cols-2 lg:grid-cols-[minmax(180px,1fr)_170px_150px]">
 								<label className="relative block">
 									<Search
-										className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-stone-400"
-										size={17}
+										className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 text-stone-500"
+										size={15}
+										strokeWidth={1.5}
 									/>
 									<input
-										className="h-10 w-full rounded-md border-0 bg-white/60 pl-9 pr-3 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md placeholder:text-stone-500"
+										className="h-12 w-full border-0 border-r border-stone-950/20 bg-transparent pl-6 pr-3 text-xs uppercase tracking-[0.08em] text-stone-950 placeholder:text-stone-500"
 										value={listSearchQuery}
 										onChange={(event) => setListSearchQuery(event.target.value)}
 										placeholder="Search by name or brand"
 									/>
 								</label>
 
-								<select
-									className="col-span-2 h-10 min-w-0 rounded-md border-0 bg-white/60 px-3 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md lg:col-span-1"
+								<CustomSelect
+									ariaLabel="Category"
+									className="min-w-0 border-r border-stone-950/20"
 									value={listCategoryFilter}
-									onChange={(event) =>
-										setListCategoryFilter(event.target.value)
-									}
-									aria-label="Category"
-								>
-									<option value="all">All categories</option>
-									{listCategoryOptions.map((itemCategory) => (
-										<option key={itemCategory} value={itemCategory}>
-											{itemCategory}
-										</option>
-									))}
-								</select>
+									onChange={setListCategoryFilter}
+									options={[
+										{ label: "All categories", value: "all" },
+										...listCategoryOptions.map((itemCategory) => ({
+											label: itemCategory,
+											value: itemCategory,
+										})),
+									]}
+								/>
 
-								<select
-									className="col-span-2 h-10 min-w-0 rounded-md border-0 bg-white/60 px-3 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md lg:col-span-1"
+								<CustomSelect
+									ariaLabel="Brand"
+									className="col-span-2 min-w-0 lg:col-span-1"
 									value={listBrandFilter}
-									onChange={(event) => setListBrandFilter(event.target.value)}
-									aria-label="Brand"
-								>
-									<option value="all">All brands</option>
-									{listBrandOptions.map((itemBrand) => (
-										<option key={itemBrand} value={itemBrand}>
-											{itemBrand}
-										</option>
-									))}
-								</select>
+									onChange={setListBrandFilter}
+									options={[
+										{ label: "All brands", value: "all" },
+										...listBrandOptions.map((itemBrand) => ({
+											label: itemBrand,
+											value: itemBrand,
+										})),
+									]}
+								/>
 							</div>
 						</div>
 
-						<div className="grid gap-3 md:grid-cols-2">
+						<div className="grid border-l border-stone-950/20 sm:grid-cols-2 xl:grid-cols-3">
 							{filteredItems.map((item) => (
 								<article
 									key={item.id}
-									className={`grid cursor-pointer grid-cols-[96px_1fr_auto] gap-3 rounded-md bg-white/42 p-2.5 text-left shadow-[0_8px_24px_rgba(28,25,23,0.06)] ring-1 backdrop-blur-lg transition duration-200 hover:-translate-y-0.5 hover:bg-white/65 hover:ring-emerald-700/45 hover:shadow-[0_14px_32px_rgba(28,25,23,0.1)] ${
+									className={`group/item relative flex cursor-pointer flex-col border-b border-r border-stone-950/20 text-left transition duration-300 hover:bg-[#e8e4da] ${
 										editingItemId === item.id
-											? "bg-emerald-50/55 ring-2 ring-emerald-700"
-											: "ring-white/60"
+											? "bg-stone-950 text-[#f3f1eb]"
+											: ""
 									}`}
 									onClick={() => startEditing(item.id)}
 									onKeyDown={(event) => {
@@ -445,36 +460,42 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
 									role="button"
 									tabIndex={0}
 								>
-									<div className="relative h-28 overflow-hidden rounded-md bg-stone-100">
+									<div className="relative aspect-[4/3] overflow-hidden bg-[#e7e4dc]">
 										<Image
 											src={item.imageUrl}
 											alt={item.name}
 											fill
-											className="object-cover"
+											className="object-cover transition duration-700 group-hover/item:scale-[1.025]"
 											unoptimized
-											sizes="96px"
+											sizes="(max-width: 768px) 50vw, 300px"
 										/>
 									</div>
-									<div className="min-w-0 py-1">
-										<div className="truncate font-semibold text-stone-950">
-											{item.name}
+									<div className="min-w-0 p-3 pr-11">
+										<div className={`fashion-display line-clamp-2 text-2xl leading-[0.95] tracking-[-0.03em] ${editingItemId === item.id ? "text-[#f3f1eb]" : "text-stone-950"}`}>
+											<HighlightedText
+												query={listSearchQuery}
+												text={item.name}
+											/>
 										</div>
-										<div className="mt-1 text-sm text-stone-600">
-											{item.brand} · {item.category}
+										<div className={`mt-2 truncate text-[10px] uppercase tracking-[0.12em] ${editingItemId === item.id ? "text-stone-300" : "text-stone-500"}`}>
+											<HighlightedText
+												query={listSearchQuery}
+												text={item.brand}
+											/>
 										</div>
-										<div className="mt-2 flex flex-wrap gap-1.5 text-xs text-stone-600">
+										<div className={`mt-1 flex flex-wrap gap-x-2 text-[9px] uppercase tracking-[0.1em] ${editingItemId === item.id ? "text-stone-400" : "text-stone-400"}`}>
+											<span>{item.category}</span>
 											{item.slots.map((slot) => (
-												<span
-													key={slot}
-													className="rounded-full bg-stone-100/80 px-2.5 py-1"
-												>
-													{slotLabels[slot]}
-												</span>
+												<span key={slot}>{slotNumbers[slot]}</span>
 											))}
 										</div>
 									</div>
 									<button
-										className="flex size-9 items-center justify-center rounded-md bg-white/40 text-stone-500 ring-1 ring-stone-950/10 backdrop-blur-md transition hover:bg-red-50 hover:text-red-700 hover:ring-red-700/30"
+										className={`absolute bottom-3 right-3 flex size-8 items-center justify-center border transition hover:border-red-700 hover:bg-red-700 hover:text-white ${
+											editingItemId === item.id
+												? "border-stone-500 text-stone-300"
+												: "border-stone-950/25 text-stone-500"
+										}`}
 										onClick={(event) => {
 											event.stopPropagation();
 											requestDelete(item.id);
@@ -482,14 +503,14 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
 										type="button"
 										title="Remove"
 									>
-										<Trash2 size={17} />
+										<Trash2 size={15} strokeWidth={1.5} />
 									</button>
 								</article>
 							))}
 						</div>
 
 						{!!items.length && !filteredItems.length && (
-							<div className="rounded-lg border border-dashed border-white/70 bg-white/30 p-8 text-center text-sm text-stone-500 backdrop-blur-lg">
+							<div className="border-x border-b border-stone-950/20 p-12 text-center text-xs uppercase tracking-[0.14em] text-stone-500">
 								No items match these filters.
 							</div>
 						)}
@@ -497,9 +518,9 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
 				</div>
 
 				{deletingItem && (
-					<div className="absolute inset-0 z-30 flex items-center justify-center bg-stone-950/45 p-4 backdrop-blur-sm">
+					<div className="absolute inset-0 z-30 flex items-center justify-center bg-stone-950/55 p-4">
 						<div
-							className="w-full max-w-sm rounded-md border border-white/80 bg-white/80 p-4 shadow-[0_18px_50px_rgba(0,0,0,0.4)] backdrop-blur-xl"
+							className="w-full max-w-sm border border-stone-950/30 bg-[#f3f1eb] p-5"
 							role="dialog"
 							aria-modal="true"
 							aria-labelledby="delete-item-title"
@@ -508,16 +529,16 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
 								<div>
 									<h3
 										id="delete-item-title"
-										className="text-lg font-semibold text-stone-950"
+										className="fashion-display text-4xl leading-none tracking-[-0.04em] text-stone-950"
 									>
 										Delete item?
 									</h3>
-									<p className="mt-1 text-sm text-stone-600">
+									<p className="mt-3 text-xs uppercase leading-relaxed tracking-[0.08em] text-stone-500">
 										{deletingItem.name} will be removed permanently.
 									</p>
 								</div>
 								<button
-									className="flex size-9 shrink-0 items-center justify-center rounded-md bg-white/60 text-stone-600 ring-1 ring-stone-950/10 transition hover:bg-white"
+									className="flex size-9 shrink-0 items-center justify-center border border-stone-950/30 text-stone-600 transition hover:bg-stone-950 hover:text-[#f3f1eb]"
 									onClick={cancelDelete}
 									type="button"
 									title="Cancel"
@@ -531,7 +552,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
 									Admin password
 								</span>
 								<input
-									className="h-12 w-full rounded-md border-0 bg-white/75 px-3 pb-1 pt-4 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/15 placeholder:text-stone-500"
+									className="h-12 w-full border border-stone-950/30 bg-transparent px-3 pb-1 pt-4 text-sm text-stone-950 placeholder:text-stone-500"
 									value={deletePassword}
 									onChange={(event) => setDeletePassword(event.target.value)}
 									onKeyDown={(event) => {
@@ -545,7 +566,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
 
 							<div className="mt-4 grid grid-cols-2 gap-2">
 								<button
-									className="h-10 rounded-md bg-white/60 text-sm font-semibold text-stone-700 ring-1 ring-stone-950/10 transition hover:bg-white"
+									className="h-10 border border-stone-950/30 text-[10px] font-semibold uppercase tracking-[0.14em] text-stone-700 transition hover:bg-stone-950 hover:text-[#f3f1eb]"
 									onClick={cancelDelete}
 									disabled={isDeleting}
 									type="button"
@@ -553,7 +574,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
 									Cancel
 								</button>
 								<button
-									className="h-10 rounded-md bg-red-700 text-sm font-semibold text-white transition hover:bg-red-800 disabled:cursor-not-allowed disabled:opacity-50"
+									className="h-10 bg-red-800 text-[10px] font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-red-900 disabled:cursor-not-allowed disabled:opacity-50"
 									onClick={confirmDelete}
 									disabled={!deletePassword || isDeleting}
 									type="button"

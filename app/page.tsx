@@ -1,75 +1,84 @@
 "use client";
 
-import { ClothingSlot, slotLabels } from "@/lib/wardrobe";
 import { ClosetView } from "@/components/ClosetView";
 import { ItemDrawer } from "@/components/ItemDrawer";
 import { ManagePanel } from "@/components/ManagePanel";
-import { SlotIcon } from "@/components/SlotIcon";
+import { ClothingSlot, slotLabels } from "@/lib/wardrobe";
+import { Settings2 } from "lucide-react";
 import { useState } from "react";
-import { BriefcaseBusiness, Settings2 } from "lucide-react";
 
 const outfitSlots: ClothingSlot[] = ["top", "outerTop", "bottom", "shoes"];
+const slotNumbers: Record<ClothingSlot, string> = {
+	top: "01",
+	outerTop: "02",
+	bottom: "03",
+	shoes: "04",
+	bag: "05",
+};
 
 export default function Home() {
-  const [activeSlot, setActiveSlot] = useState<ClothingSlot | null>(null);
-  const [isManaging, setIsManaging] = useState(false);
+	const [activeSlot, setActiveSlot] = useState<ClothingSlot | null>(null);
+	const [isManaging, setIsManaging] = useState(false);
 
-  return (
-    <main className="h-screen overflow-y-auto px-4 py-3 sm:px-8 sm:py-4 lg:px-10">
-      <div className="mx-auto flex max-w-7xl flex-col pb-8">
-        <section className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1fr)_312px]">
-          <div className="grid content-start gap-3 md:grid-cols-2">
-            {outfitSlots.map((slot) => (
-              <ClosetView
-                key={slot}
-                slot={slot}
-                onOpen={() => setActiveSlot(slot)}
-              />
-            ))}
-          </div>
+	return (
+		<main className="min-h-screen bg-[#f3f1eb] px-4 py-4 text-stone-950 sm:px-7 lg:px-10">
+			<div className="mx-auto max-w-[1600px]">
+				<header className="flex items-center justify-end gap-6 border-b border-stone-950/30 pb-4">
+					<button
+						className="mb-0.5 inline-flex h-9 items-center justify-center gap-2 border border-stone-950/30 px-3 text-[10px] font-semibold uppercase tracking-[0.16em] transition hover:border-stone-950 hover:bg-stone-950 hover:text-[#f3f1eb]"
+						onClick={() => setIsManaging(true)}
+						type="button"
+					>
+						<Settings2 size={14} strokeWidth={1.5} />
+						Manage wardrobe
+					</button>
+				</header>
 
-          <aside className="grid content-start gap-3">
-            <button
-              className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-md bg-stone-950 px-4 text-sm font-medium text-white shadow-[0_8px_20px_rgba(28,25,23,0.18)] transition duration-200 hover:-translate-y-0.5 hover:bg-emerald-950"
-              onClick={() => setIsManaging(true)}
-              type="button"
-            >
-              <Settings2 size={18} />
-              Manage
-            </button>
-            <ClosetView
-              compact
-              slot="bag"
-              onOpen={() => setActiveSlot("bag")}
-            />
-            <div className="rounded-md bg-white/70 p-3 shadow-[0_10px_30px_rgba(28,25,23,0.08)] ring-1 ring-stone-950/5 backdrop-blur">
-              <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-stone-900">
-                <BriefcaseBusiness size={17} />
-                Quick pick
-              </div>
-              <div className="grid grid-cols-5 gap-2 lg:grid-cols-1">
-                {[...outfitSlots, "bag" as ClothingSlot].map((slot) => (
-                  <button
-                    key={slot}
-                    className="flex h-12 items-center justify-center gap-2 rounded-md bg-stone-100/80 text-sm font-medium text-stone-800 transition duration-200 hover:bg-emerald-100/80 hover:text-emerald-950"
-                    onClick={() => setActiveSlot(slot)}
-                    type="button"
-                    title={`Open ${slotLabels[slot]}`}
-                  >
-                    <SlotIcon slot={slot} />
-                    <span className="hidden sm:inline lg:inline">
-                      {slotLabels[slot]}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </aside>
-        </section>
-      </div>
+				<section className="border-b border-stone-950/30 lg:grid lg:h-[calc(100vh-146px)] lg:min-h-[620px] lg:grid-cols-12">
+					<div className="grid border-stone-950/20 md:grid-cols-2 lg:col-span-9 lg:grid-rows-2 lg:border-r">
+						{outfitSlots.map((slot) => (
+							<div
+								className="h-full border-b border-stone-950/20 md:odd:border-r lg:[&:nth-child(n+3)]:border-b-0"
+								key={slot}
+							>
+								<ClosetView
+									index={slotNumbers[slot]}
+									slot={slot}
+									onOpen={() => setActiveSlot(slot)}
+								/>
+							</div>
+						))}
+					</div>
 
-      <ItemDrawer activeSlot={activeSlot} onClose={() => setActiveSlot(null)} />
-      <ManagePanel open={isManaging} onClose={() => setIsManaging(false)} />
-    </main>
-  );
+					<aside className="flex min-h-[420px] flex-col lg:col-span-3">
+						<ClosetView
+							compact
+							index={slotNumbers.bag}
+							slot="bag"
+							onOpen={() => setActiveSlot("bag")}
+						/>
+					</aside>
+				</section>
+
+				<nav className="flex flex-wrap items-center justify-between gap-3 py-3 text-[10px] uppercase tracking-[0.16em] text-stone-500">
+					<span>Build an outfit, one piece at a time</span>
+					<div className="flex flex-wrap gap-x-5 gap-y-2">
+						{[...outfitSlots, "bag" as ClothingSlot].map((slot) => (
+							<button
+								key={slot}
+								className="transition hover:text-stone-950"
+								onClick={() => setActiveSlot(slot)}
+								type="button"
+							>
+								{slotNumbers[slot]} {slotLabels[slot]}
+							</button>
+						))}
+					</div>
+				</nav>
+			</div>
+
+			<ItemDrawer activeSlot={activeSlot} onClose={() => setActiveSlot(null)} />
+			<ManagePanel open={isManaging} onClose={() => setIsManaging(false)} />
+		</main>
+	);
 }
