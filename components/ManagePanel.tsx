@@ -165,7 +165,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
       aria-hidden={!open}
     >
       <div
-        className={`absolute inset-0 bg-stone-950/25 backdrop-blur-[3px] transition-opacity duration-300 ${
+        className={`absolute inset-0 bg-stone-950/40 backdrop-blur-[3px] transition-opacity duration-300 ${
           open ? "opacity-100" : "opacity-0"
         }`}
         onClick={onClose}

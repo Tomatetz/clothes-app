@@ -110,7 +110,7 @@ export function ItemDrawer({ activeSlot, onClose }: ItemDrawerProps) {
       aria-hidden={!activeSlot}
     >
       <div
-        className={`absolute inset-0 bg-stone-950/25 backdrop-blur-[2px] transition-opacity duration-300 ${
+        className={`absolute inset-0 bg-stone-950/40 backdrop-blur-[2px] transition-opacity duration-300 ${
           activeSlot ? "opacity-100" : "opacity-0"
         }`}
         onClick={onClose}
