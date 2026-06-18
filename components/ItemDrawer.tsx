@@ -139,7 +139,7 @@ export function ItemDrawer({ activeSlot, onClose }: ItemDrawerProps) {
           </button>
         </div>
 
-        <div className="mb-4 grid gap-3 rounded-lg border border-white/70 bg-white/[0.42] p-3 shadow-[0_12px_35px_rgba(28,25,23,0.08)] backdrop-blur-xl">
+        <div className="mb-4 grid gap-3">
           <label className="relative block">
             <Search
               className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-stone-400"
