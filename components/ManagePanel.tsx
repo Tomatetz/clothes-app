@@ -8,7 +8,14 @@ import {
   slotLabels
 } from "@/lib/wardrobe";
 import Image from "next/image";
-import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
+import {
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from "react";
 import { ImagePlus, Search, Trash2, X } from "lucide-react";
 import { SlotIcon } from "@/components/SlotIcon";
 
@@ -23,6 +30,8 @@ type ManagePanelProps = {
 export function ManagePanel({ open, onClose }: ManagePanelProps) {
   const { addItem, error, items, removeItem, updateItem, uploadImage } =
     useWardrobe();
+  const panelScrollRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
   const [deletingItemId, setDeletingItemId] = useState<string | null>(null);
   const [deletePassword, setDeletePassword] = useState("");
@@ -91,6 +100,11 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
     setSlots(item.slots);
     setImageUrl(item.imageUrl);
     setPhotoFile(null);
+
+    requestAnimationFrame(() => {
+      panelScrollRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+      formRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+    });
   }
 
   function requestDelete(itemId: string) {
@@ -204,8 +218,15 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
             : "translate-y-4 scale-[0.985] opacity-0"
         }`}
       >
-        <div className="grid h-[92vh] max-h-[92vh] w-full grid-cols-1 overflow-y-auto lg:grid-cols-[420px_1fr] lg:overflow-hidden">
-          <form className="border-b border-white/45 bg-white/15 px-5 pb-5 lg:h-full lg:overflow-y-auto lg:border-b-0 lg:border-r" onSubmit={handleSubmit}>
+        <div
+          ref={panelScrollRef}
+          className="grid h-[92vh] max-h-[92vh] w-full grid-cols-1 overflow-y-auto lg:grid-cols-[420px_1fr] lg:overflow-hidden"
+        >
+          <form
+            ref={formRef}
+            className="border-b border-white/45 bg-white/15 px-5 pb-5 lg:h-full lg:overflow-y-auto lg:border-b-0 lg:border-r"
+            onSubmit={handleSubmit}
+          >
             <div className="-mx-5 mb-5 flex min-h-16 items-center justify-between gap-4 border-b border-white/40 bg-white/45 px-5 py-3 backdrop-blur-xl lg:sticky lg:top-0 lg:z-20">
               <h2 className="text-xl font-semibold text-stone-950">
                 {editingItemId ? "Edit clothes" : "Add clothes"}
