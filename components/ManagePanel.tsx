@@ -165,13 +165,13 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
       aria-hidden={!open}
     >
       <div
-        className={`absolute inset-0 bg-stone-950/40 backdrop-blur-[3px] transition-opacity duration-300 ${
+        className={`absolute inset-0 bg-stone-950/55 backdrop-blur-[4px] transition-opacity duration-300 ${
           open ? "opacity-100" : "opacity-0"
         }`}
         onClick={onClose}
       />
       <section
-        className={`absolute left-1/2 top-1/2 flex max-h-[92vh] w-[min(1120px,calc(100vw-24px))] -translate-x-1/2 overflow-hidden rounded-lg border border-white/55 bg-white/20 shadow-[0_28px_90px_rgba(28,25,23,0.26)] backdrop-blur-xl transition duration-300 ${
+        className={`absolute left-1/2 top-1/2 flex max-h-[92vh] w-[min(1120px,calc(100vw-24px))] -translate-x-1/2 overflow-hidden rounded-lg border border-white/90 bg-white/30 shadow-[0_30px_100px_rgba(0,0,0,0.48),0_0_0_1px_rgba(255,255,255,0.35)] backdrop-blur-xl transition duration-300 ${
           open ? "-translate-y-1/2 opacity-100" : "translate-y-4 opacity-0"
         }`}
       >

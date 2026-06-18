@@ -110,13 +110,13 @@ export function ItemDrawer({ activeSlot, onClose }: ItemDrawerProps) {
       aria-hidden={!activeSlot}
     >
       <div
-        className={`absolute inset-0 bg-stone-950/40 backdrop-blur-[2px] transition-opacity duration-300 ${
+        className={`absolute inset-0 bg-stone-950/55 backdrop-blur-[3px] transition-opacity duration-300 ${
           activeSlot ? "opacity-100" : "opacity-0"
         }`}
         onClick={onClose}
       />
       <aside
-        className={`absolute right-0 top-0 h-full w-full max-w-xl overflow-y-auto border-l border-white/50 bg-white/15 px-5 pb-5 shadow-[-24px_0_70px_rgba(28,25,23,0.18)] backdrop-blur-md transition-transform duration-300 sm:px-6 sm:pb-6 ${
+        className={`absolute right-0 top-0 h-full w-full max-w-xl overflow-y-auto border-l border-white/90 bg-white/20 px-5 pb-5 shadow-[-28px_0_90px_rgba(0,0,0,0.42)] backdrop-blur-md transition-transform duration-300 sm:px-6 sm:pb-6 ${
           activeSlot ? "translate-x-0" : "translate-x-full"
         }`}
       >
