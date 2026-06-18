@@ -35,7 +35,7 @@ export function ClosetView({
     <article className="group flex h-full min-h-0 flex-col border-stone-950/20 bg-[#f3f1eb] text-left">
       <div className="flex h-full flex-col">
         <header
-          className={`flex items-end justify-between gap-3 border-b px-3 py-3 transition-colors duration-300 sm:px-4 ${
+          className={`flex h-12 shrink-0 items-center justify-between gap-3 border-b px-3 transition-colors duration-300 sm:px-4 ${
             removeHovered
               ? "border-red-800/25 bg-red-900/[0.055]"
               : "border-stone-950/20"

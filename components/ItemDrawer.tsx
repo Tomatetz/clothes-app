@@ -56,7 +56,8 @@ export function ItemDrawer({ activeSlot, onClose }: ItemDrawerProps) {
 
 	useEffect(
 		() => () => {
-			if (parallaxFrameRef.current) cancelAnimationFrame(parallaxFrameRef.current);
+			if (parallaxFrameRef.current)
+				cancelAnimationFrame(parallaxFrameRef.current);
 		},
 		[],
 	);
@@ -67,20 +68,26 @@ export function ItemDrawer({ activeSlot, onClose }: ItemDrawerProps) {
 		const containerRect = container.getBoundingClientRect();
 		const center = containerRect.top + containerRect.height / 2;
 
-		container.querySelectorAll<HTMLElement>(".drawer-parallax").forEach((item) => {
-			const rect = item.getBoundingClientRect();
-			const itemCenter = rect.top + rect.height / 2;
-			const progress = Math.max(
-				-1,
-				Math.min(1, (itemCenter - center) / containerRect.height),
-			);
-			item.style.setProperty("--parallax-y", `${(-progress * 5).toFixed(2)}px`);
-		});
+		container
+			.querySelectorAll<HTMLElement>(".drawer-parallax")
+			.forEach((item) => {
+				const rect = item.getBoundingClientRect();
+				const itemCenter = rect.top + rect.height / 2;
+				const progress = Math.max(
+					-1,
+					Math.min(1, (itemCenter - center) / containerRect.height),
+				);
+				item.style.setProperty(
+					"--parallax-y",
+					`${(-progress * 5).toFixed(2)}px`,
+				);
+			});
 	}
 
 	function handleDrawerScroll(event: UIEvent<HTMLElement>) {
 		const container = event.currentTarget;
-		if (parallaxFrameRef.current) cancelAnimationFrame(parallaxFrameRef.current);
+		if (parallaxFrameRef.current)
+			cancelAnimationFrame(parallaxFrameRef.current);
 		parallaxFrameRef.current = requestAnimationFrame(() =>
 			updateParallax(container),
 		);
@@ -106,15 +113,10 @@ export function ItemDrawer({ activeSlot, onClose }: ItemDrawerProps) {
 				onScroll={handleDrawerScroll}
 			>
 				<div className="sticky top-0 z-20 -mx-4 bg-[#f3f1eb] sm:-mx-6">
-					<div className="flex items-end justify-between gap-4 border-b border-stone-950/30 px-4 py-5 sm:px-6">
-						<div>
-							<div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-500">
-								Select garment / {String(items.length).padStart(2, "0")} items
-							</div>
-							<h2 className="fashion-display mt-2 text-5xl leading-[0.8] tracking-[-0.045em] text-stone-950 sm:text-6xl">
-								{activeSlot ? slotLabels[activeSlot] : "Items"}
-							</h2>
-						</div>
+					<div className="flex items-center justify-between gap-4 border-b border-stone-950/30 px-4 py-5 sm:px-6">
+						<h2 className="fashion-display mt-2 text-3xl leading-[0.8] tracking-[-0.045em] text-stone-950">
+							{activeSlot ? slotLabels[activeSlot] : "Items"}
+						</h2>
 						<button
 							className="flex size-9 items-center justify-center border border-stone-950/30 text-stone-700 transition hover:bg-stone-950 hover:text-[#f3f1eb]"
 							onClick={onClose}
@@ -213,13 +215,19 @@ export function ItemDrawer({ activeSlot, onClose }: ItemDrawerProps) {
 									)}
 								</MagneticSurface>
 								<div className="min-w-0 p-3">
-									<div className={`fashion-display line-clamp-2 text-xl leading-[0.95] tracking-[-0.025em] ${isSelected ? "text-[#f3f1eb]" : "text-stone-950"}`}>
+									<div
+										className={`fashion-display line-clamp-2 text-xl leading-[0.95] tracking-[-0.025em] ${isSelected ? "text-[#f3f1eb]" : "text-stone-950"}`}
+									>
 										<HighlightedText query={searchQuery} text={item.name} />
 									</div>
-									<div className={`mt-2 truncate text-[10px] uppercase tracking-[0.13em] ${isSelected ? "text-stone-300" : "text-stone-500"}`}>
+									<div
+										className={`mt-2 truncate text-[10px] uppercase tracking-[0.13em] ${isSelected ? "text-stone-300" : "text-stone-500"}`}
+									>
 										<HighlightedText query={searchQuery} text={item.brand} />
 									</div>
-									<div className={`mt-1 text-[9px] uppercase tracking-[0.1em] ${isSelected ? "text-stone-400" : "text-stone-400"}`}>
+									<div
+										className={`mt-1 text-[9px] uppercase tracking-[0.1em] ${isSelected ? "text-stone-400" : "text-stone-400"}`}
+									>
 										{item.category}
 										{selectedElsewhere && (
 											<span> / In {slotLabels[selectedElsewhere]}</span>

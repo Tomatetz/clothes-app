@@ -106,81 +106,60 @@ select:focus-visible {
   animation-fill-mode: both;
 }
 
-.manage-stage {
-  transform-origin: center center;
+.manage-filter-row {
+  height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transform: translateY(-8px);
   transition:
-    transform 560ms cubic-bezier(0.22, 1, 0.36, 1),
-    filter 560ms cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 560ms cubic-bezier(0.22, 1, 0.36, 1);
+    height 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 260ms ease,
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.manage-stage-active {
-  filter: saturate(0.72);
-  opacity: 0.72;
-  transform: translateX(-10px) scale(0.982);
-}
-
-.manage-backdrop {
-  opacity: 0;
-  transition: opacity 420ms ease;
-}
-
-.manage-sheet {
-  opacity: 0;
-  transform: translate(-50%, calc(-50% + 26px)) scale(0.985);
-  clip-path: inset(4% 0 0 0);
+.manage-filter-row-open {
+  height: 48px;
+  opacity: 1;
+  overflow: visible;
+  transform: translateY(0);
   transition:
-    opacity 360ms ease,
-    transform 560ms cubic-bezier(0.22, 1, 0.36, 1),
-    clip-path 560ms cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform, clip-path, opacity;
+    height 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 260ms ease,
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    overflow 0s 420ms;
 }
 
-.manage-mode[data-state="open"] .manage-backdrop {
-  opacity: 1;
+.mode-bag-wipe {
+  visibility: hidden;
 }
 
-.manage-mode[data-state="open"] .manage-sheet {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
-  clip-path: inset(0);
-}
-
-.editorial-grid-line {
-  position: absolute;
-  display: block;
-  background: rgba(28, 25, 23, 0.38);
+.mode-bag-wipe-fill {
+  background: #dedbd1;
   opacity: 0;
 }
 
-.editorial-grid-line-v {
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  transform: scaleY(0);
+.mode-canvas-to-manage .mode-bag-wipe,
+.mode-canvas-to-outfit .mode-bag-wipe {
+  visibility: visible;
+}
+
+.mode-canvas-to-manage .mode-bag-wipe-fill {
+  animation: bag-fill-down 560ms cubic-bezier(0.76, 0, 0.24, 1) both;
   transform-origin: top;
-  animation: draw-grid-vertical 850ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
 }
 
-.editorial-grid-line-v-one {
-  left: 37.5%;
-  animation-delay: 90ms;
+.mode-canvas-to-manage .mode-bag-wipe-line {
+  animation: bag-line-down 560ms cubic-bezier(0.76, 0, 0.24, 1) both;
 }
 
-.editorial-grid-line-v-two {
-  left: 75%;
-  animation-delay: 180ms;
+.mode-canvas-to-outfit .mode-bag-wipe-fill {
+  animation: bag-fill-up 560ms cubic-bezier(0.76, 0, 0.24, 1) both;
+  background: #f3f1eb;
+  transform-origin: bottom;
 }
 
-.editorial-grid-line-h {
-  top: 50%;
-  left: 0;
-  width: 75%;
-  height: 1px;
-  transform: scaleX(0);
-  transform-origin: left;
-  animation: draw-grid-horizontal 900ms 300ms cubic-bezier(0.65, 0, 0.35, 1)
-    forwards;
+.mode-canvas-to-outfit .mode-bag-wipe-line {
+  animation: bag-line-up 560ms cubic-bezier(0.76, 0, 0.24, 1) both;
 }
 
 @keyframes dropdown-unfold-open {
@@ -193,6 +172,68 @@ select:focus-visible {
     opacity: 1;
     clip-path: inset(0);
     transform: translateY(0) scaleY(1);
+  }
+}
+
+@keyframes bag-fill-down {
+  0% {
+    opacity: 1;
+    transform: scaleY(0);
+  }
+  50%,
+  82% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes bag-line-down {
+  from {
+    top: 0;
+    opacity: 1;
+  }
+  82% {
+    top: 100%;
+    opacity: 1;
+  }
+  to {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes bag-fill-up {
+  0% {
+    opacity: 1;
+    transform: scaleY(0);
+  }
+  50%,
+  82% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes bag-line-up {
+  from {
+    top: 100%;
+    opacity: 1;
+  }
+  82% {
+    top: 0;
+    opacity: 1;
+  }
+  to {
+    top: 0;
+    opacity: 0;
   }
 }
 
@@ -217,42 +258,6 @@ select:focus-visible {
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@keyframes draw-grid-vertical {
-  0% {
-    opacity: 0;
-    transform: scaleY(0);
-  }
-  12% {
-    opacity: 1;
-  }
-  82% {
-    opacity: 1;
-    transform: scaleY(1);
-  }
-  to {
-    opacity: 0;
-    transform: scaleY(1);
-  }
-}
-
-@keyframes draw-grid-horizontal {
-  0% {
-    opacity: 0;
-    transform: scaleX(0);
-  }
-  12% {
-    opacity: 1;
-  }
-  82% {
-    opacity: 1;
-    transform: scaleX(1);
-  }
-  to {
-    opacity: 0;
-    transform: scaleX(1);
   }
 }
 
