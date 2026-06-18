@@ -165,18 +165,18 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
       aria-hidden={!open}
     >
       <div
-        className={`absolute inset-0 bg-stone-950/30 transition-opacity ${
+        className={`absolute inset-0 bg-stone-950/25 backdrop-blur-[3px] transition-opacity duration-300 ${
           open ? "opacity-100" : "opacity-0"
         }`}
         onClick={onClose}
       />
       <section
-        className={`absolute left-1/2 top-1/2 flex max-h-[92vh] w-[min(1120px,calc(100vw-24px))] -translate-x-1/2 overflow-hidden rounded-lg border border-stone-300 bg-[#fbfaf7] shadow-soft transition ${
+        className={`absolute left-1/2 top-1/2 flex max-h-[92vh] w-[min(1120px,calc(100vw-24px))] -translate-x-1/2 overflow-hidden rounded-lg border border-white/55 bg-white/20 shadow-[0_28px_90px_rgba(28,25,23,0.26)] backdrop-blur-xl transition duration-300 ${
           open ? "-translate-y-1/2 opacity-100" : "translate-y-4 opacity-0"
         }`}
       >
         <div className="grid max-h-[92vh] w-full grid-cols-1 overflow-y-auto lg:grid-cols-[420px_1fr]">
-          <form className="border-b border-stone-300 p-5 lg:border-b-0 lg:border-r" onSubmit={handleSubmit}>
+          <form className="border-b border-white/45 bg-white/15 p-5 lg:border-b-0 lg:border-r" onSubmit={handleSubmit}>
             <div className="mb-5 flex items-start justify-between gap-4">
               <div>
                 <p className="text-xs uppercase tracking-[0.22em] text-stone-500">
@@ -187,7 +187,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
                 </h2>
               </div>
               <button
-                className="flex size-10 items-center justify-center rounded-md border border-stone-300 bg-white text-stone-700 hover:border-stone-950"
+                className="flex size-10 items-center justify-center rounded-md border border-white/70 bg-white/45 text-stone-700 shadow-sm backdrop-blur-md transition hover:border-stone-400 hover:bg-white/70"
                 onClick={onClose}
                 type="button"
                 title="Close"
@@ -201,7 +201,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
                 Admin password
               </span>
               <input
-                className="h-11 w-full rounded-md border border-stone-300 bg-white px-3 text-stone-950"
+                className="h-11 w-full rounded-md border border-white/70 bg-white/45 px-3 text-stone-950 shadow-inner backdrop-blur-md placeholder:text-stone-500"
                 value={adminPassword}
                 onChange={(event) => setAdminPassword(event.target.value)}
                 placeholder="Required for saving"
@@ -214,7 +214,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
                 Name
               </span>
               <input
-                className="h-11 w-full rounded-md border border-stone-300 bg-white px-3 text-stone-950"
+                className="h-11 w-full rounded-md border border-white/70 bg-white/45 px-3 text-stone-950 shadow-inner backdrop-blur-md placeholder:text-stone-500"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
                 placeholder="Black jacket"
@@ -227,7 +227,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
                   Category
                 </span>
                 <select
-                  className="h-11 w-full rounded-md border border-stone-300 bg-white px-3 text-stone-950"
+                  className="h-11 w-full rounded-md border border-white/70 bg-white/45 px-3 text-stone-950 shadow-inner backdrop-blur-md"
                   value={category}
                   onChange={(event) => {
                     const nextCategory = event.target.value;
@@ -246,7 +246,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
                   Season
                 </span>
                 <select
-                  className="h-11 w-full rounded-md border border-stone-300 bg-white px-3 text-stone-950"
+                  className="h-11 w-full rounded-md border border-white/70 bg-white/45 px-3 text-stone-950 shadow-inner backdrop-blur-md"
                   value={season}
                   onChange={(event) => setSeason(event.target.value as Season)}
                 >
@@ -264,7 +264,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
                 Brand
               </span>
               <input
-                className="h-11 w-full rounded-md border border-stone-300 bg-white px-3 text-stone-950"
+                className="h-11 w-full rounded-md border border-white/70 bg-white/45 px-3 text-stone-950 shadow-inner backdrop-blur-md placeholder:text-stone-500"
                 value={brand}
                 onChange={(event) => setBrand(event.target.value)}
                 placeholder="Brand"
@@ -282,7 +282,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
                     className={`h-10 rounded-md border text-sm font-medium transition ${
                       slots.includes(slot)
                         ? "border-emerald-800 bg-emerald-800 text-white"
-                        : "border-stone-300 bg-white text-stone-700 hover:border-emerald-700"
+                        : "border-white/70 bg-white/40 text-stone-700 backdrop-blur-md hover:border-emerald-700 hover:bg-white/65"
                     }`}
                     onClick={() => toggleSlot(slot)}
                     type="button"
@@ -293,7 +293,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
               </div>
             </div>
 
-            <label className="mb-5 block cursor-pointer rounded-lg border border-dashed border-stone-300 bg-white p-3 transition hover:border-emerald-700">
+            <label className="mb-5 block cursor-pointer rounded-lg border border-dashed border-white/70 bg-white/35 p-3 shadow-sm backdrop-blur-md transition hover:border-emerald-700 hover:bg-white/55">
               <input
                 className="sr-only"
                 type="file"
@@ -338,7 +338,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
 
             {editingItemId && (
               <button
-                className="mt-3 h-10 w-full rounded-md border border-stone-300 bg-white px-4 text-sm font-semibold text-stone-700 transition hover:border-stone-950"
+                className="mt-3 h-10 w-full rounded-md border border-white/70 bg-white/40 px-4 text-sm font-semibold text-stone-700 backdrop-blur-md transition hover:border-stone-950 hover:bg-white/65"
                 onClick={resetForm}
                 type="button"
               >
@@ -347,7 +347,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
             )}
           </form>
 
-          <div className="p-5">
+          <div className="bg-white/10 p-5">
             <div className="mb-4 flex items-end justify-between gap-3">
               <div>
                 <p className="text-xs uppercase tracking-[0.22em] text-stone-500">
@@ -357,19 +357,19 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
                   All clothes
                 </h3>
               </div>
-              <span className="rounded-md bg-stone-100 px-2.5 py-1 text-sm text-stone-600">
+              <span className="rounded-md border border-white/60 bg-white/35 px-2.5 py-1 text-sm text-stone-600 backdrop-blur-md">
                 {filteredItems.length}/{items.length}
               </span>
             </div>
 
-            <div className="mb-4 grid gap-3 rounded-lg border border-stone-300 bg-white p-3">
+            <div className="mb-4 grid gap-3 rounded-lg border border-white/60 bg-white/28 p-3 shadow-[0_12px_35px_rgba(28,25,23,0.08)] backdrop-blur-lg">
               <label className="relative block">
                 <Search
                   className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-stone-400"
                   size={18}
                 />
                 <input
-                  className="h-11 w-full rounded-md border border-stone-300 bg-stone-50 pl-10 pr-3 text-sm text-stone-950"
+                  className="h-11 w-full rounded-md border border-white/70 bg-white/45 pl-10 pr-3 text-sm text-stone-950 shadow-inner backdrop-blur-md placeholder:text-stone-500"
                   value={listSearchQuery}
                   onChange={(event) => setListSearchQuery(event.target.value)}
                   placeholder="Search by name or brand"
@@ -382,7 +382,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
                     Category
                   </span>
                   <select
-                    className="h-10 w-full rounded-md border border-stone-300 bg-stone-50 px-3 text-sm text-stone-950"
+                    className="h-10 w-full rounded-md border border-white/70 bg-white/45 px-3 text-sm text-stone-950 shadow-inner backdrop-blur-md"
                     value={listCategoryFilter}
                     onChange={(event) => setListCategoryFilter(event.target.value)}
                   >
@@ -400,7 +400,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
                     Brand
                   </span>
                   <select
-                    className="h-10 w-full rounded-md border border-stone-300 bg-stone-50 px-3 text-sm text-stone-950"
+                    className="h-10 w-full rounded-md border border-white/70 bg-white/45 px-3 text-sm text-stone-950 shadow-inner backdrop-blur-md"
                     value={listBrandFilter}
                     onChange={(event) => setListBrandFilter(event.target.value)}
                   >
@@ -419,10 +419,10 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
               {filteredItems.map((item) => (
                 <article
                   key={item.id}
-                  className={`grid cursor-pointer grid-cols-[88px_1fr_auto] gap-3 rounded-lg border bg-white p-2 text-left transition hover:border-emerald-700 ${
+                  className={`grid cursor-pointer grid-cols-[88px_1fr_auto] gap-3 rounded-lg border bg-white/38 p-2 text-left shadow-[0_8px_24px_rgba(28,25,23,0.06)] backdrop-blur-lg transition hover:-translate-y-0.5 hover:border-emerald-700 hover:bg-white/60 hover:shadow-[0_14px_32px_rgba(28,25,23,0.1)] ${
                     editingItemId === item.id
-                      ? "border-emerald-800"
-                      : "border-stone-300"
+                      ? "border-emerald-800 bg-emerald-50/45"
+                      : "border-white/60"
                   }`}
                   onClick={() => startEditing(item.id)}
                   onKeyDown={(event) => {
@@ -455,7 +455,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
                       {item.slots.map((slot) => (
                         <span
                           key={slot}
-                          className="rounded-md bg-stone-100 px-2 py-1"
+                          className="rounded-md border border-white/60 bg-white/35 px-2 py-1"
                         >
                           {slotLabels[slot]}
                         </span>
@@ -463,7 +463,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
                     </div>
                   </div>
                   <button
-                    className="flex size-9 items-center justify-center rounded-md border border-stone-300 text-stone-500 transition hover:border-red-700 hover:text-red-700"
+                    className="flex size-9 items-center justify-center rounded-md border border-white/70 bg-white/30 text-stone-500 backdrop-blur-md transition hover:border-red-700 hover:bg-white/60 hover:text-red-700"
                     onClick={(event) => {
                       event.stopPropagation();
                       window.sessionStorage.setItem(
@@ -484,7 +484,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
             </div>
 
             {!!items.length && !filteredItems.length && (
-              <div className="rounded-lg border border-dashed border-stone-300 bg-white p-8 text-center text-sm text-stone-500">
+              <div className="rounded-lg border border-dashed border-white/70 bg-white/30 p-8 text-center text-sm text-stone-500 backdrop-blur-lg">
                 No items match these filters.
               </div>
             )}
