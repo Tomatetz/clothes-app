@@ -3,7 +3,7 @@
 import { useWardrobe } from "@/context/WardrobeContext";
 import { ClothingSlot, seasonLabel, slotLabels } from "@/lib/wardrobe";
 import Image from "next/image";
-import { Check, Minus } from "lucide-react";
+import { Minus } from "lucide-react";
 import { SlotIcon } from "@/components/SlotIcon";
 
 type ClosetViewProps = {
@@ -72,9 +72,6 @@ export function ClosetView({ slot, onOpen, compact = false }: ClosetViewProps) {
                     : "(max-width: 768px) 100vw, (max-width: 1280px) 40vw, 430px"
                 }
               />
-              <span className="absolute right-3 top-3 flex size-8 items-center justify-center rounded-full bg-emerald-800 text-white shadow-md ring-2 ring-white/80">
-                <Check size={16} strokeWidth={2.5} />
-              </span>
             </div>
             <div className="min-w-0 px-0.5 pb-0.5">
               <div
