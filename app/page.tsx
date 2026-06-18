@@ -15,22 +15,8 @@ export default function Home() {
   const [isManaging, setIsManaging] = useState(false);
 
   return (
-    <main className="h-screen overflow-y-auto px-4 py-4 sm:px-8 sm:py-5 lg:px-10">
-      <div className="mx-auto flex max-w-7xl flex-col gap-4 pb-8">
-        <header className="flex items-center justify-between gap-4">
-          <h1 className="text-2xl font-semibold text-stone-950 sm:text-3xl">
-            Outfit Builder
-          </h1>
-          <button
-            className="inline-flex h-10 shrink-0 items-center gap-2 rounded-md bg-stone-950 px-3.5 text-sm font-medium text-white shadow-[0_8px_20px_rgba(28,25,23,0.18)] transition duration-200 hover:-translate-y-0.5 hover:bg-emerald-950"
-            onClick={() => setIsManaging(true)}
-            type="button"
-          >
-            <Settings2 size={18} />
-            Manage
-          </button>
-        </header>
-
+    <main className="h-screen overflow-y-auto px-4 py-3 sm:px-8 sm:py-4 lg:px-10">
+      <div className="mx-auto flex max-w-7xl flex-col pb-8">
         <section className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1fr)_312px]">
           <div className="grid content-start gap-3 md:grid-cols-2">
             {outfitSlots.map((slot) => (
@@ -43,6 +29,14 @@ export default function Home() {
           </div>
 
           <aside className="grid content-start gap-3">
+            <button
+              className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-md bg-stone-950 px-4 text-sm font-medium text-white shadow-[0_8px_20px_rgba(28,25,23,0.18)] transition duration-200 hover:-translate-y-0.5 hover:bg-emerald-950"
+              onClick={() => setIsManaging(true)}
+              type="button"
+            >
+              <Settings2 size={18} />
+              Manage
+            </button>
             <ClosetView
               compact
               slot="bag"
