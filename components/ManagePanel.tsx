@@ -24,6 +24,9 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
   const { addItem, error, items, removeItem, updateItem, uploadImage } =
     useWardrobe();
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
+  const [deletingItemId, setDeletingItemId] = useState<string | null>(null);
+  const [deletePassword, setDeletePassword] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
   const [adminPassword, setAdminPassword] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [name, setName] = useState("");
@@ -59,6 +62,9 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
       return matchesSearch && matchesCategory && matchesBrand;
     });
   }, [items, listBrandFilter, listCategoryFilter, listSearchQuery]);
+  const deletingItem = deletingItemId
+    ? items.find((item) => item.id === deletingItemId)
+    : null;
 
   useEffect(() => {
     setAdminPassword(window.sessionStorage.getItem("clothes-admin-password") ?? "");
@@ -85,6 +91,33 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
     setSlots(item.slots);
     setImageUrl(item.imageUrl);
     setPhotoFile(null);
+  }
+
+  function requestDelete(itemId: string) {
+    setDeletingItemId(itemId);
+    setDeletePassword("");
+  }
+
+  function cancelDelete() {
+    if (isDeleting) return;
+    setDeletingItemId(null);
+    setDeletePassword("");
+  }
+
+  async function confirmDelete() {
+    if (!deletingItemId || !deletePassword) return;
+
+    setIsDeleting(true);
+    window.sessionStorage.setItem("clothes-admin-password", deletePassword);
+    const removed = await removeItem(deletingItemId, deletePassword);
+    setIsDeleting(false);
+
+    if (!removed) return;
+
+    if (editingItemId === deletingItemId) resetForm();
+    setAdminPassword(deletePassword);
+    setDeletingItemId(null);
+    setDeletePassword("");
   }
 
   function handlePhoto(event: ChangeEvent<HTMLInputElement>) {
@@ -187,12 +220,12 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
               </button>
             </div>
 
-            <label className="mb-4 block">
-              <span className="mb-1.5 block text-sm font-medium text-stone-700">
+            <label className="relative mb-3 block">
+              <span className="pointer-events-none absolute left-3 top-1.5 z-10 text-[10px] font-semibold uppercase text-stone-500">
                 Admin password
               </span>
               <input
-                className="h-11 w-full rounded-md border-0 bg-white/60 px-3 text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md placeholder:text-stone-500"
+                className="h-12 w-full rounded-md border-0 bg-white/60 px-3 pb-1 pt-4 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md placeholder:text-stone-500"
                 value={adminPassword}
                 onChange={(event) => setAdminPassword(event.target.value)}
                 placeholder="Required for saving"
@@ -200,24 +233,24 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
               />
             </label>
 
-            <label className="mb-4 block">
-              <span className="mb-1.5 block text-sm font-medium text-stone-700">
+            <label className="relative mb-3 block">
+              <span className="pointer-events-none absolute left-3 top-1.5 z-10 text-[10px] font-semibold uppercase text-stone-500">
                 Name
               </span>
               <input
-                className="h-11 w-full rounded-md border-0 bg-white/60 px-3 text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md placeholder:text-stone-500"
+                className="h-12 w-full rounded-md border-0 bg-white/60 px-3 pb-1 pt-4 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md placeholder:text-stone-500"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
                 placeholder="Black jacket"
               />
             </label>
 
-            <label className="mb-4 block">
-              <span className="mb-1.5 block text-sm font-medium text-stone-700">
+            <label className="relative mb-3 block">
+              <span className="pointer-events-none absolute left-3 top-1.5 z-10 text-[10px] font-semibold uppercase text-stone-500">
                 Category
               </span>
               <select
-                className="h-11 w-full rounded-md border-0 bg-white/60 px-3 text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md"
+                className="h-12 w-full rounded-md border-0 bg-white/60 px-3 pb-1 pt-4 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md"
                 value={category}
                 onChange={(event) => {
                   const nextCategory = event.target.value;
@@ -231,12 +264,12 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
               </select>
             </label>
 
-            <label className="mb-4 block">
-              <span className="mb-1.5 block text-sm font-medium text-stone-700">
+            <label className="relative mb-3 block">
+              <span className="pointer-events-none absolute left-3 top-1.5 z-10 text-[10px] font-semibold uppercase text-stone-500">
                 Brand
               </span>
               <input
-                className="h-11 w-full rounded-md border-0 bg-white/60 px-3 text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md placeholder:text-stone-500"
+                className="h-12 w-full rounded-md border-0 bg-white/60 px-3 pb-1 pt-4 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md placeholder:text-stone-500"
                 value={brand}
                 onChange={(event) => setBrand(event.target.value)}
                 placeholder="Brand"
@@ -366,18 +399,10 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
                   ))}
                 </select>
 
-                <div className="row-start-1 flex items-center gap-2 lg:col-start-4">
+                <div className="row-start-1 flex items-center lg:col-start-4">
                   <span className="rounded-full bg-white/55 px-2.5 py-1 text-xs font-medium text-stone-600 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md">
                     {filteredItems.length}/{items.length}
                   </span>
-                  <button
-                    className="flex size-9 items-center justify-center rounded-md bg-white/55 text-stone-700 shadow-sm ring-1 ring-stone-950/10 backdrop-blur-md transition hover:bg-white/80 lg:hidden"
-                    onClick={onClose}
-                    type="button"
-                    title="Close"
-                  >
-                    <X size={17} />
-                  </button>
                 </div>
               </div>
             </div>
@@ -433,13 +458,7 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
                     className="flex size-9 items-center justify-center rounded-md bg-white/40 text-stone-500 ring-1 ring-stone-950/10 backdrop-blur-md transition hover:bg-red-50 hover:text-red-700 hover:ring-red-700/30"
                     onClick={(event) => {
                       event.stopPropagation();
-                      window.sessionStorage.setItem(
-                        "clothes-admin-password",
-                        adminPassword
-                      );
-                      removeItem(item.id, adminPassword).then((removed) => {
-                        if (removed && editingItemId === item.id) resetForm();
-                      });
+                      requestDelete(item.id);
                     }}
                     type="button"
                     title="Remove"
@@ -457,6 +476,75 @@ export function ManagePanel({ open, onClose }: ManagePanelProps) {
             )}
           </div>
         </div>
+
+        {deletingItem && (
+          <div className="absolute inset-0 z-30 flex items-center justify-center bg-stone-950/45 p-4 backdrop-blur-sm">
+            <div
+              className="w-full max-w-sm rounded-md border border-white/80 bg-white/80 p-4 shadow-[0_18px_50px_rgba(0,0,0,0.4)] backdrop-blur-xl"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="delete-item-title"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <h3
+                    id="delete-item-title"
+                    className="text-lg font-semibold text-stone-950"
+                  >
+                    Delete item?
+                  </h3>
+                  <p className="mt-1 text-sm text-stone-600">
+                    {deletingItem.name} will be removed permanently.
+                  </p>
+                </div>
+                <button
+                  className="flex size-9 shrink-0 items-center justify-center rounded-md bg-white/60 text-stone-600 ring-1 ring-stone-950/10 transition hover:bg-white"
+                  onClick={cancelDelete}
+                  type="button"
+                  title="Cancel"
+                >
+                  <X size={17} />
+                </button>
+              </div>
+
+              <label className="relative mt-4 block">
+                <span className="pointer-events-none absolute left-3 top-1.5 z-10 text-[10px] font-semibold uppercase text-stone-500">
+                  Admin password
+                </span>
+                <input
+                  className="h-12 w-full rounded-md border-0 bg-white/75 px-3 pb-1 pt-4 text-sm text-stone-950 shadow-sm ring-1 ring-stone-950/15 placeholder:text-stone-500"
+                  value={deletePassword}
+                  onChange={(event) => setDeletePassword(event.target.value)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") confirmDelete();
+                  }}
+                  placeholder="Required to delete"
+                  type="password"
+                  autoFocus
+                />
+              </label>
+
+              <div className="mt-4 grid grid-cols-2 gap-2">
+                <button
+                  className="h-10 rounded-md bg-white/60 text-sm font-semibold text-stone-700 ring-1 ring-stone-950/10 transition hover:bg-white"
+                  onClick={cancelDelete}
+                  disabled={isDeleting}
+                  type="button"
+                >
+                  Cancel
+                </button>
+                <button
+                  className="h-10 rounded-md bg-red-700 text-sm font-semibold text-white transition hover:bg-red-800 disabled:cursor-not-allowed disabled:opacity-50"
+                  onClick={confirmDelete}
+                  disabled={!deletePassword || isDeleting}
+                  type="button"
+                >
+                  {isDeleting ? "Deleting..." : "Delete"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </section>
     </div>
   );

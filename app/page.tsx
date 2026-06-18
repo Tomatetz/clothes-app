@@ -15,19 +15,14 @@ export default function Home() {
   const [isManaging, setIsManaging] = useState(false);
 
   return (
-    <main className="h-screen overflow-y-auto px-4 py-5 sm:px-8 sm:py-7 lg:px-10">
-      <div className="mx-auto flex max-w-7xl flex-col gap-6 pb-8">
-        <header className="flex flex-wrap items-center justify-between gap-4 pb-1">
-          <div>
-            <p className="text-xs font-medium uppercase text-stone-500">
-              Local wardrobe
-            </p>
-            <h1 className="mt-1 text-3xl font-semibold text-stone-950 sm:text-4xl">
-              Outfit Builder
-            </h1>
-          </div>
+    <main className="h-screen overflow-y-auto px-4 py-4 sm:px-8 sm:py-5 lg:px-10">
+      <div className="mx-auto flex max-w-7xl flex-col gap-4 pb-8">
+        <header className="flex items-center justify-between gap-4">
+          <h1 className="text-2xl font-semibold text-stone-950 sm:text-3xl">
+            Outfit Builder
+          </h1>
           <button
-            className="inline-flex h-11 items-center gap-2 rounded-md bg-stone-950 px-4 text-sm font-medium text-white shadow-[0_8px_20px_rgba(28,25,23,0.18)] transition duration-200 hover:-translate-y-0.5 hover:bg-emerald-950"
+            className="inline-flex h-10 shrink-0 items-center gap-2 rounded-md bg-stone-950 px-3.5 text-sm font-medium text-white shadow-[0_8px_20px_rgba(28,25,23,0.18)] transition duration-200 hover:-translate-y-0.5 hover:bg-emerald-950"
             onClick={() => setIsManaging(true)}
             type="button"
           >
